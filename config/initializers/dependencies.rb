@@ -1,0 +1,2 @@
+# Standard libraries
+require 'ostruct'
