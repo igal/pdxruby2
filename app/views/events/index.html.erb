@@ -1,36 +1,60 @@
 <h1>Listing events</h1>
 
-<table>
+<table id="eventlist">
   <tr>
-    <th>Member</th>
-    <th>Location</th>
     <th>Name</th>
-    <th>Starts at</th>
-    <th>Ends at</th>
-    <th>Agenda</th>
-    <th>Created at</th>
-    <th>Minutes</th>
+    <th>Owner</th>
+    <th>Location</th>
+    <th>Starts At</th>
+    <th>Ends At</th>
     <th>Status</th>
   </tr>
-
-<% @events.each do |event| %>
-  <tr>
-    <td><%=h event.member_id %></td>
-    <td><%=h event.location_id %></td>
-    <td><%=h event.name %></td>
-    <td><%=h event.starts_at %></td>
-    <td><%=h event.ends_at %></td>
-    <td><%=h event.agenda %></td>
-    <td><%=h event.created_at %></td>
-    <td><%=h event.minutes %></td>
-    <td><%=h event.status %></td>
-    <td><%= link_to 'Show', event %></td>
-    <td><%= link_to 'Edit', edit_event_path(event) %></td>
-    <td><%= link_to 'Destroy', event, :confirm => 'Are you sure?', :method => :delete %></td>
+  
+<% for event in @events %>
+  <tr class="<%= event.status %>_event">
+    <td>
+      <%= link_to event.name, :action => 'show', :id => event.id %>
+    </td>
+    <td>
+      <% if event.member %>
+          <%= link_to event.member.name, 
+              :controller => 'members', 
+              :action => 'show',
+              :id => event.member.id %>
+      <% else %>
+        <span class="attention">no one</span> 
+        (<%= link_to 'claim',
+            {:action => 'claim',
+             :id => event.id },
+             :confirm => 'Are you sure?' %>)
+      <% end %>
+    </td>
+    <% if event.location.nil? %>
+      <td><i>unknown</i></td>
+    <% else %>
+      <td>
+        <%= link_to event.location.name, 
+            :controller => 'locations', 
+            :action => 'show', 
+            :id => event.location.id 
+        %>
+        </td>
+    <% end %>
+    <td><%= event.starts_at.strftime('%a %b %d %Y at %I:%M%p') %></td>
+    <td><%= event.ends_at.strftime('%a %b %d %Y at %I:%M%p') %></td>
+    <td><%= event.status %></td>
+    <% if session[:member] && event.member && (session[:member].id == event.member_id) %>
+      <td><%= link_to 'Edit', :action => 'edit', :id => event %></td>
+    <% unless event.cancelled? or event.ended? %>
+      <td><%= link_to 'Cancel', {:action => 'cancel', :id => event}, :confirm => 'Are you sure?' %></td>
+    <% end %>
+    <% end %>
   </tr>
 <% end %>
 </table>
 
+<%= will_paginate @events %>
+
 <br />
 
-<%= link_to 'New event', new_event_path %>
+<%= link_to 'New event', :action => 'new' %>
