@@ -1,0 +1,4 @@
+# Cookie session name:
+session_key:    '_pdxruby2_session'
+# Cookie session secret code used to encrypt the payload:
+session_secret: 'b3f8283574bc72a79f9546988da474da432c43b6c653e73b9a14c08e9da70b16481b6d5b76a7a28e86695f262a379ae7e548d1ab3ba501ff469f683a5d261013'
