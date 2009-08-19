@@ -1,0 +1,2 @@
+class MemberSessionsController < ApplicationController
+end
