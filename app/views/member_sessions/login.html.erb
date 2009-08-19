@@ -1,0 +1,22 @@
+<% form_for @member_session, :url => login_path do |f| %>
+  <p>
+    <%= f.label :email %>
+    <br/>
+    <%= f.text_field :email %>
+  </p>
+
+  <p>
+    <%= f.label :password %>
+    <br/>
+    <%= f.password_field :password %>
+  </p>
+
+  <%= f.submit "Login" %>
+<% end %>
+
+<p>
+  Or <%= link_to 'register as a new member', new_member_path %>.<br>
+  <% if false %> <%# FIXME make reset work %>
+    <%= link_to 'Forgot your password?', :action => 'reset' %>
+  <% end %>
+</p>

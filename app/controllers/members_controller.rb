@@ -1,4 +1,8 @@
 class MembersController < ApplicationController
+  before_filter :require_user, :only => [:index, :show, :edit, :update, :destroy]
+  before_filter :assign_user, :only => [:show, :edit, :update, :destroy]
+  before_filter :require_privileges_for_user, :only => [:edit, :update, :destroy]
+
   # GET /members
   # GET /members.xml
   def index
@@ -13,8 +17,6 @@ class MembersController < ApplicationController
   # GET /members/1
   # GET /members/1.xml
   def show
-    @member = Member.find(params[:id])
-
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @member }
@@ -42,6 +44,14 @@ class MembersController < ApplicationController
   def create
     @member = Member.new(params[:member])
 
+    if params[:member_password] == params[:member_verify_password]
+      @member.password = params[:member_password]
+    else
+      flash[:notice] = "ERROR: Passwords were not the same."
+      render :action => "new"
+      return false
+    end
+
     respond_to do |format|
       if @member.save
         flash[:notice] = 'Member was successfully created.'
@@ -57,7 +67,15 @@ class MembersController < ApplicationController
   # PUT /members/1
   # PUT /members/1.xml
   def update
-    @member = Member.find(params[:id])
+    if params[:member_password]
+      if params[:member_password] == params[:member_verify_password]
+        @member.password = params[:member_password]
+      else
+        flash[:notice] = "ERROR: Passwords were not the same."
+        render :action => "edit"
+        return false
+      end
+    end
 
     respond_to do |format|
       if @member.update_attributes(params[:member])
@@ -74,12 +92,32 @@ class MembersController < ApplicationController
   # DELETE /members/1
   # DELETE /members/1.xml
   def destroy
-    @member = Member.find(params[:id])
     @member.destroy
 
     respond_to do |format|
       format.html { redirect_to(members_url) }
       format.xml  { head :ok }
+    end
+  end
+
+protected
+
+  def assign_user
+    @member = Member.find_by_id(params[:id])
+    if @member
+      return false
+    else
+      flash[:notice] = "Member not found, maybe they were deleted."
+      return redirect_back_or_default(members_path)
+    end
+  end
+
+  def require_privileges_for_user
+    if current_user == @member
+      return false
+    else
+      flash[:notice] = "You are not allowed to edit this user's account"
+      return redirect_back_or_default(members_path)
     end
   end
 end

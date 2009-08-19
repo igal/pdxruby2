@@ -11,7 +11,7 @@
 <% for event in @events %>
   <tr class="<%= event.status %>_event">
     <td>
-      <%= link_to event.name, :action => 'show', :id => event.id %>
+      <%= link_to event.name, event_path(event) %>
     </td>
     <% unless event.location %>
       <td><i>unknown</i></td>

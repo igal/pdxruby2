@@ -46,3 +46,10 @@ production:
   database: pdxruby2_production
   pool: 5
   password:
+
+old:
+  adapter: postgresql
+  encoding: unicode
+  database: pdxruby_production
+  pool: 5
+  password:

@@ -7,8 +7,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.root :controller => "home"
 
-  map.login '/login',  :controller => 'member_sessions', :action => 'login'
-  map.login '/logout', :controller => 'member_sessions', :action => 'logout'
+  map.login  '/login',  :controller => 'member_sessions', :action => 'login'
+  map.logout '/logout', :controller => 'member_sessions', :action => 'logout'
   # TODO add password reset
 
   # The priority is based upon order of creation: first created -> highest priority.

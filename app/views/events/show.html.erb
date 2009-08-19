@@ -38,27 +38,27 @@
 
 <hr/>
 
-<% if session[:member] == @event.member %>
-  <p>
-    <%= link_to 'Edit this event', edit_event_path(@event) %> |
-    <%= link_to 'Destroy this event', event_path(@event), :method => :delete, :confirm => 'Destroy this event?' %>
-    <% if false %><%# FIXME grant access to event %>
-      <% if @event.member == session[:member] %>
+<% if logged_in? %>
+  <% if current_user == @event.member %>
+    <p>
+      <%= link_to 'Edit this event', edit_event_path(@event) %> |
+      <%= link_to 'Destroy this event', event_path(@event), :method => :delete, :confirm => 'Destroy this event?' %>
+      <% if false %><%# FIXME release access to event %>
       | <%= link_to 'Give up ownership',
           :action => 'release',
           :id => @event,
           :confirm => 'Are you sure?' %>
       <% end %>
+    </p>
+  <% else %>
+    <% if false %><%# FIXME grant access to event %>
+      <% if @event.unclaimed? %>
+        <%= link_to 'Claim ownership',
+            :action => 'claim',
+            :id => @event,
+            :confirm => 'Are you sure?' %>
+      <% end %>
     <% end %>
-  </p>
-<% end %>
-
-<% if false %><%# FIXME grant access to event %>
-  <% if @event.unclaimed? and session[:member] %>
-    <%= link_to 'Claim ownership',
-        :action => 'claim',
-        :id => @event,
-        :confirm => 'Are you sure?' %>
   <% end %>
 <% end %>
 

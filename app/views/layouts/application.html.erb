@@ -29,22 +29,23 @@
     <div id="sidebar">
       <ul>
         <li><%= link_to 'Home', root_path %></li>
-        <li><%= link_to 'Event List', events_path %></li>
-        <% if session[:member].nil? %>
-          <li><%= link_to 'Member Login', login_path %></li>
-        <% else %>
-          <li><%= link_to 'Member List', members_path %></li>
+        <li><%= link_to 'Events', events_path %></li>
+        <% if logged_in?%>
+          <li><%= link_to 'Members', members_path %></li>
           <li>
             <dl>
-              <dt><%= session[:member][:name] %></dt>
+              <dt><%= current_user.name %></dt>
               <dd>
                 <ul>
-                  <li><%= link_to 'Settings', member_path(session[:member].id) %></li>
+                  <li><%= link_to 'Settings', member_path(current_user) %></li>
                   <li><%= link_to 'Logout', logout_path %></li>
                 </ul>
               </dd>
             </dl>
           </li>
+        <% else %>
+          <li><%= link_to 'Login', login_path %></li>
+          <li><%= link_to 'Register', new_member_path %></li>
         <% end %>
       </ul>
     </div>

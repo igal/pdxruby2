@@ -1,30 +1,19 @@
-<h1>Listing members</h1>
+<h3>Members</h3>
 
-<table>
+<table id="memberlist">
   <tr>
-    <th>Name</th>
-    <th>Email</th>
-    <th>Password</th>
-    <th>Feed url</th>
-    <th>About</th>
-    <th>Created at</th>
+   <th>Name</td>
+   <th>Email</td>
   </tr>
 
-<% @members.each do |member| %>
+<% for member in @members %>
   <tr>
-    <td><%=h member.name %></td>
-    <td><%=h member.email %></td>
-    <td><%=h member.password %></td>
-    <td><%=h member.feed_url %></td>
-    <td><%=h member.about %></td>
-    <td><%=h member.created_at %></td>
-    <td><%= link_to 'Show', member %></td>
-    <td><%= link_to 'Edit', edit_member_path(member) %></td>
-    <td><%= link_to 'Destroy', member, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= link_to h(member.name), member_path(member) %></td>
+    <td><%= link_to h(member.email), "mailto:#{member.email}" %></td>
   </tr>
 <% end %>
 </table>
 
 <br />
 
-<%= link_to 'New member', new_member_path %>
+<%= link_to 'Add new member', new_member_path %>

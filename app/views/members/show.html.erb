@@ -1,33 +1,47 @@
-<p>
-  <b>Name:</b>
-  <%=h @member.name %>
-</p>
+<h3>Profile</h3>
+<blockquote>
+  <% if (logged_in? and current_user.id  == params[:id].to_i) %>
+    <div style="float:right">
+      <%= link_to 'Edit', :action => 'edit', :id => @member %>
+    </div>
+  <% end %>
+  <p>
+    <% if !File.exist?("#{RAILS_ROOT}/public/images/members/#{@member.id.to_s}.jpg") %>
+      <%= image_tag '/images/members/default.jpg' %>
+    <% else %>
+      <%= image_tag "/images/members/#{@member.id.to_s}.jpg" %>
+    <% end %>
+   </p>
 
-<p>
-  <b>Email:</b>
-  <%=h @member.email %>
-</p>
+   <p>
+     <b>Name:</b> <%= h @member.name %>
+   </p>
 
-<p>
-  <b>Password:</b>
-  <%=h @member.password %>
-</p>
+   <% unless @member.feed_url.blank? %>
+     <p>
+       <b>Feed URL:</b> <%= link_to @member.feed_url, h(@member.feed_url) %>
+     </p>
+   <% end %>
 
-<p>
-  <b>Feed url:</b>
-  <%=h @member.feed_url %>
-</p>
+   <% if false %><# FIXME show email addresses or not? %>
+     <% unless @member.email.blank? %>
+       <p>
+         <b>Email:</b> <%= h(@member.email) %>
+       </p>
+     <% end %>
+   <% end %>
 
-<p>
-  <b>About:</b>
-  <%=h @member.about %>
-</p>
+   <% unless @member.irc_nick.blank? %>
+     <p>
+       <b>IRC nick:</b> <%= h(@member.irc_nick) %>
+     </p>
+   <% end %>
 
-<p>
-  <b>Created at:</b>
-  <%=h @member.created_at %>
-</p>
-
-
-<%= link_to 'Edit', edit_member_path(@member) %> |
-<%= link_to 'Back', members_path %>
+   <% unless @member.about.blank? %>
+     <p>
+       <b>About:</b>
+       <br/>
+       <%= textilize @member.about %>
+     </p>
+   <% end %>
+</blockquote>
