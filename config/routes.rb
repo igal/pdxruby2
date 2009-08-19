@@ -7,6 +7,10 @@ ActionController::Routing::Routes.draw do |map|
 
   map.root :controller => "home"
 
+  map.login '/login',  :controller => 'member_sessions', :action => 'login'
+  map.login '/logout', :controller => 'member_sessions', :action => 'logout'
+  # TODO add password reset
+
   # The priority is based upon order of creation: first created -> highest priority.
 
   # Sample of regular route:
@@ -25,7 +29,7 @@ ActionController::Routing::Routes.draw do |map|
 
   # Sample resource route with sub-resources:
   #   map.resources :products, :has_many => [ :comments, :sales ], :has_one => :seller
-  
+
   # Sample resource route with more complex sub-resources
   #   map.resources :products do |products|
   #     products.resources :comments
