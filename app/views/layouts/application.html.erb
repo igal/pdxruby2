@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 
 <html lang="en">
-  
+
   <head>
   	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   	<meta http-equiv="Content-Language" content="en-us">
@@ -11,7 +11,7 @@
         <%= javascript_include_tag 'prototype' %>
   	<title>The Portland Ruby Brigade (PDX.rb)</title>
   </head>
-  
+
   <body>
 
     <div id="banner">
@@ -19,36 +19,28 @@
       <div id="banner-left">
         <h1>pdx.rb</h1>
       </div>
-    
+
       <div id="banner-right">
         <h1>The Portland Ruby Brigade</h1>
       </div>
-    
+
     </div>
 
     <div id="sidebar">
       <ul>
-        <li><%= link_to 'Home', :controller => 'index' %></li>
-        <li><%= link_to 'Event List', :controller => "events", :action => "list" %></li>
-        <% if false %>
-          <!-- HACK disable articles -->
-          <li><%= link_to 'Article List', :controller => "articles", :action => "list" %></li>
-        <% end %>
+        <li><%= link_to 'Home', root_path %></li>
+        <li><%= link_to 'Event List', events_path %></li>
         <% if session[:member].nil? %>
-          <li><%= link_to 'Member Login', :controller => "members", :action => "login" %></li>
+          <li><%= link_to 'Member Login', login_path %></li>
         <% else %>
-          <li><%= link_to 'Member List', :controller => "members", :action => "list" %></li>
+          <li><%= link_to 'Member List', members_path %></li>
           <li>
             <dl>
               <dt><%= session[:member][:name] %></dt>
               <dd>
                 <ul>
-                  <li><%= link_to 'Settings',
-                    :controller => "members", :action => "show", :id => session[:member].id
-                    %></li>
-                  <li><%= link_to 'Logout',
-                    :controller => "members", :action => "logout"
-                    %></li>
+                  <li><%= link_to 'Settings', member_path(session[:member].id) %></li>
+                  <li><%= link_to 'Logout', logout_path %></li>
                 </ul>
               </dd>
             </dl>
@@ -56,7 +48,7 @@
         <% end %>
       </ul>
     </div>
-    
+
     <div id="content">
       <% if flash[:notice] %>
         <p class="flash"><%= flash[:notice] %></p>
@@ -64,6 +56,6 @@
 
       <%= @content_for_layout %>
     </div>
-    
+
   </body>
 </html>
