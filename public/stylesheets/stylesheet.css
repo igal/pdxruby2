@@ -128,3 +128,60 @@ table#eventlist tr.cancelled_event {
   font-weight: bold;
   background: #ff9;
 }
+
+/*---[ changes ]------------------------------------------------------*/
+
+#changes_table th, 
+#changes_table td {
+  text-align: left;
+  vertical-align: top;
+  padding: 0.25em;
+}
+
+#changes_table, 
+.changes_details_table {
+  width: 100%;
+}
+
+#changes_table .change_time {
+  width: 10%;
+}
+
+#changes_table .change_details {
+  width: 90%;
+}
+
+#changes_table .change_time, 
+#changes_table .change_details {
+  padding-bottom: 1em;
+}
+
+#changes_table .change_detail_description {
+  margin: 0;
+  padding: 0;
+  padding-bottom: 0.5em;
+  font-style: italic;
+}
+
+.changes_details_table td {
+  border-bottom: 1px solid gray;
+}
+
+
+.changes_details_table .changes_detail_key {
+  width; 10%;
+}
+
+.changes_details_table .changes_detail_value {
+  width: 40%;
+}
+
+.changes_details_table .change_detail_spacer {
+  width: 10%;
+  text-align: center;
+  vertical-align: middle;
+  font-weight: bold;
+  font-size: 200%;
+}
+
+/*---[ fin ]----------------------------------------------------------*/

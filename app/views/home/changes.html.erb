@@ -1,0 +1,50 @@
+<h1>Changes</h1>
+
+<%= link_to "Changes feed", changes_formatted_path(:format => "atom") %>
+
+<table cellspacing="0" id="changes_table">
+  <tr>
+    <th class="change_time">Time</th>
+    <th class="change_details">Details with Current/Previous</th>
+  </tr>
+  <% @versions.each do |version| %>
+    <tr>
+      <td class="change_time">
+        #<%= version.id %>
+        <%= version.created_at %>
+      </td>
+      <td class="change_details">
+        <p class="change_detail_description">
+          <%= link_to "#{version.item_type}##{version.item_id}", url_for(:controller => version.item_type.tableize, :action => "show", :id => version.item_id) %>
+          <b><%= version.event %></b>
+          <% if version.whodunnit %>
+          <% if user = Member.find(version.whodunnit) rescue nil %>
+          by <%= link_to user.name, member_path(user) %>
+          <% end %>
+          <% end %>
+        </p>
+
+        <% changes = changes_for(version) %>
+
+        <table cellspacing="0" class="changes_details_table">
+          <% changes.keys.sort.each do |key| %>
+            <tr>
+              <td class="change_detail_key">
+                <b><%= key %></b>
+              </td>
+              <td class="change_detail_value">
+                <%= changes[key][0].inspect %>
+              </td>
+              <td class="change_detail_spacer">&larr;</td>
+              <td class="changes_detail_value">
+                <%= changes[key][1].inspect %>
+              </td>
+            </tr>
+          <% end %>
+        </table>
+      </td>
+    </tr>
+  <% end %>
+</table>
+
+<%= will_paginate @versions %>
