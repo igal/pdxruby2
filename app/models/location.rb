@@ -14,6 +14,8 @@
 class Location < ActiveRecord::Base
   has_many :events
 
+  default_scope :order => 'name asc'
+
   validates_presence_of :name
   validates_presence_of :address
 
