@@ -60,6 +60,7 @@ end
 counter = Location.connection.select_value('select max(id) from locations').to_i + 1
 Location.connection.execute("ALTER SEQUENCE locations_id_seq RESTART WITH #{counter}")
 
+offset_hours = 7.hours
 puts
 puts "EVENTS"
 Event.destroy_all
@@ -72,8 +73,8 @@ OldEvent.all.each do |o|
     :location_id => o.location_id,
     :member_id => o.member_id,
 
-    :starts_at => o.starts_at,
-    :ends_at => o.ends_at,
+    :starts_at => o.starts_at + offset_hours,
+    :ends_at => o.ends_at + offset_hours,
 
     :cancelled => o.status == "cancelled",
     :created_at => o.created_at)
