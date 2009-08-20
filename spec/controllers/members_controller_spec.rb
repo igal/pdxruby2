@@ -9,7 +9,12 @@ describe MembersController do
   end
 
   def mock_member(stubs={})
-    @mock_member ||= mock_model(Member, stubs)
+    defaults = {
+      :name => "A name",
+      :email => "email@host.com",
+      :can_alter? => true,
+    }
+    @mock_member ||= mock_model(Member, defaults.merge(stubs))
   end
 
   describe "GET index" do

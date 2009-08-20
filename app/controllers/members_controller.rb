@@ -1,7 +1,7 @@
 class MembersController < ApplicationController
   before_filter :require_user, :only => [:index, :show, :edit, :update, :destroy]
   before_filter :assign_user_or_redirect, :only => [:show, :edit, :update, :destroy]
-  before_filter :require_privileges_for_user, :only => [:edit, :update, :destroy]
+  before_filter :require_authorization, :only => [:edit, :update, :destroy]
 
   # GET /members
   # GET /members.xml
@@ -95,6 +95,7 @@ class MembersController < ApplicationController
     @member.destroy
 
     respond_to do |format|
+      flash[:notice] = "Destroyed user"
       format.html { redirect_to(members_url) }
       format.xml  { head :ok }
     end
@@ -112,8 +113,8 @@ protected
     end
   end
 
-  def require_privileges_for_user
-    if current_user == @member
+  def require_authorization
+    if @member.can_alter?(current_user)
       return false
     else
       flash[:notice] = "You are not allowed to edit this user's account"

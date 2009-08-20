@@ -19,6 +19,7 @@ describe EventsController do
       :location => locations("cubespace"),
       :created_at => Time.now,
       :updated_at => Time.now,
+      :can_alter? => true,
     }
     @mock_event ||= mock_model(Event, defaults.merge(stubs))
   end
@@ -183,8 +184,7 @@ describe EventsController do
       end
 
       it "destroys the requested event" do
-        Event.should_receive(:find).with("37").and_return(mock_event)
-        mock_event.should_receive(:destroy)
+        Event.should_receive(:find).with("37").and_return(mock_event(:destroy => true))
         delete :destroy, :id => "37"
       end
 

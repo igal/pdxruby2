@@ -18,4 +18,8 @@ class Location < ActiveRecord::Base
   validates_presence_of :address
 
   has_paper_trail
+
+  def can_alter?(user)
+    return(user && user.admin?)
+  end
 end

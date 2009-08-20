@@ -1,7 +1,7 @@
 class LocationsController < ApplicationController
-  # FIXME anyone user can edit locations and there's no versioning, which is bad
   before_filter :require_user, :only => [:new, :create, :edit, :update, :destroy]
   before_filter :assign_location_or_redirect, :only => [:show, :edit, :update, :destroy]
+  before_filter :require_authorization, :only => [:edit, :update, :destroy]
 
   # GET /locations
   # GET /locations.xml
@@ -90,6 +90,15 @@ protected
     rescue ActiveRecord::RecordNotFound => e
       flash[:notice] = "No such location, maybe it was deleted."
       return redirect_back_or_default(locations_path)
+    end
+  end
+
+  def require_authorization
+    if @location.can_alter?(current_user)
+      return false
+    else
+      flash[:notice] = "You are not allowed to edit this location."
+      return redirect_back_or_default(location_path(@location))
     end
   end
 end

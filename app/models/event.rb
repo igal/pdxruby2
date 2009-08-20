@@ -30,6 +30,10 @@ class Event < ActiveRecord::Base
 
   has_paper_trail
 
+  def can_alter?(user)
+    return(user && (user.admin? || self.member == user))
+  end
+
   # Return iCalendar data for the given events.
   #
   # Options:

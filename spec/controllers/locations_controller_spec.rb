@@ -7,6 +7,7 @@ describe LocationsController do
     defaults = {
       :name => "A place",
       :address => "An address",
+      :can_alter? => true,
     }
     @mock_location ||= mock_model(Location, defaults.merge(stubs))
   end
