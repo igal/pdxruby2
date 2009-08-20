@@ -36,6 +36,8 @@ OldMember.all.each do |o|
     require 'rubygems'; require 'ruby-debug'; Debugger.start; debugger; 1
   end
 end
+counter = Member.connection.select_value('select max(id) from members').to_i + 1
+Member.connection.execute("ALTER SEQUENCE members_id_seq RESTART WITH #{counter}")
 
 puts
 puts "LOCATIONS"
@@ -55,6 +57,8 @@ OldLocation.all.each do |o|
     require 'rubygems'; require 'ruby-debug'; Debugger.start; debugger; 1
   end
 end
+counter = Location.connection.select_value('select max(id) from locations').to_i + 1
+Location.connection.execute("ALTER SEQUENCE locations_id_seq RESTART WITH #{counter}")
 
 puts
 puts "EVENTS"
@@ -82,3 +86,5 @@ OldEvent.all.each do |o|
     require 'rubygems'; require 'ruby-debug'; Debugger.start; debugger; 1
   end
 end
+counter = Event.connection.select_value('select max(id) from events').to_i + 1
+Event.connection.execute("ALTER SEQUENCE events_id_seq RESTART WITH #{counter}")
