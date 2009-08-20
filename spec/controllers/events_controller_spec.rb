@@ -1,7 +1,13 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe EventsController do
-  fixtures :members, :locations
+  fixtures :members, :events, :locations
+
+  before(:each) do
+    @aaron = members(:aaron)
+    @bubba = members(:bubba)
+    @clio = members(:clio)
+  end
 
   def mock_event(stubs={})
     defaults = {
@@ -74,13 +80,17 @@ describe EventsController do
 
       describe "with valid params" do
         it "assigns a newly created event as @event" do
-          Event.stub!(:new).with({'these' => 'params'}).and_return(mock_event(:save => true))
+          event = mock_event(:save => true)
+          event.should_receive(:member=).with(@aaron)
+          Event.stub!(:new).with({'these' => 'params'}).and_return(event)
           post :create, :event => {:these => 'params'}
           assigns[:event].should equal(mock_event)
         end
 
         it "redirects to the created event" do
-          Event.stub!(:new).and_return(mock_event(:save => true))
+          event = mock_event(:save => true)
+          Event.stub!(:new).and_return(event)
+          event.should_receive(:member=).with(@aaron)
           post :create, :event => {}
           response.should redirect_to(event_url(mock_event))
         end
@@ -88,13 +98,17 @@ describe EventsController do
 
       describe "with invalid params" do
         it "assigns a newly created but unsaved event as @event" do
-          Event.stub!(:new).with({'these' => 'params'}).and_return(mock_event(:save => false))
+          event = mock_event(:save => false)
+          Event.stub!(:new).with({'these' => 'params'}).and_return(event)
+          event.should_receive(:member=).with(@aaron)
           post :create, :event => {:these => 'params'}
           assigns[:event].should equal(mock_event)
         end
 
         it "re-renders the 'new' template" do
-          Event.stub!(:new).and_return(mock_event(:save => false))
+          event = mock_event(:save => false)
+          event.should_receive(:member=).with(@aaron)
+          Event.stub!(:new).and_return(event)
           post :create, :event => {}
           response.should render_template('new')
         end

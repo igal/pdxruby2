@@ -31,7 +31,7 @@ meeting:
   cancelled: false
 
 meeting2:
-  member: aaron
+  member: bubba
   location: cubespace
   name: "Meeting2"
   minutes: "Meeting2 minutes"

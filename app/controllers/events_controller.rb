@@ -56,6 +56,7 @@ class EventsController < ApplicationController
   def create
     @event = Event.new(params[:event])
     @location = nil
+    @event.member = current_user
 
     if params[:location]
       @location = Location.new(params[:location])
