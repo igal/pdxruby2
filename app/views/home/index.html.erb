@@ -21,7 +21,10 @@
 
 <h2>Events</h2>
 <p>
-  <a href="webcal://pdxruby.org/events/ical">Subscribe</a> or <a href="http://pdxruby.org/events/ical">download</a> events.
+  <%= link_to "Subscribe", events_url(:format => "ics", :protocol => "webcal") %>
+  or
+  <%= link_to "download", events_url(:format => "ics") %>
+  events.
 </p>
 <ul>
   <%= render :partial => 'event', :collection => @events %>

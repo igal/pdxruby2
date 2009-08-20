@@ -10,6 +10,7 @@ class EventsController < ApplicationController
     respond_to do |format|
       format.ics {
         @events = Event.recent
+        render :text => Event.to_icalendar(@events)
       }
       format.html { 
         # index.html.erb 
