@@ -50,5 +50,4 @@ Spec::Runner.configure do |config|
   # For more information take a look at Spec::Runner::Configuration and Spec::Runner
 end
 
-require 'lib/authenticated_test_helper'
-include AuthenticatedTestHelper
+require File.dirname(__FILE__) + "/spec_helper_customizations"
