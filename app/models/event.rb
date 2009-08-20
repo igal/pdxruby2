@@ -1,3 +1,22 @@
+# == Schema Information
+# Schema version: 20090819180345
+#
+# Table name: events
+#
+#  id          :integer         not null, primary key
+#  location_id :integer
+#  member_id   :integer
+#  starts_at   :datetime
+#  ends_at     :datetime
+#  name        :string(128)
+#  status      :string(64)
+#  agenda      :string(16384)
+#  minutes     :string(16384)
+#  created_at  :datetime
+#  updated_at  :datetime
+#  cancelled   :boolean
+#
+
 class Event < ActiveRecord::Base
   belongs_to :member
   belongs_to :location
