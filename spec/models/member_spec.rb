@@ -21,7 +21,7 @@ describe Member do
   before(:each) do
     @valid_attributes = {
       :name => "value for name",
-      :email => "value for email",
+      :email => "email@host.com",
       :password => "value for password",
       :feed_url => "value for feed_url",
       :about => "value for about",
@@ -31,5 +31,30 @@ describe Member do
 
   it "should create a new instance given valid attributes" do
     Member.create!(@valid_attributes)
+  end
+
+  describe "authentication" do
+    before(:each) do
+      @plain_password = "foo"
+      @hashed_password = Digest::SHA1.hexdigest(@plain_password)
+    end
+
+    it "should provide a way to hash passwords" do
+      Member.hashed_password(@plain_password).should == @hashed_password
+    end
+
+    it "should hash password on assignment" do
+      member = Member.new
+      member.password = @plain_password
+
+      member.password.should == @hashed_password
+    end
+
+    it "should validate password matches" do
+      member = Member.new
+      member.password = @plain_password
+
+      member.valid_password?(@plain_password).should be_true
+    end
   end
 end
