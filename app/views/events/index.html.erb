@@ -3,52 +3,25 @@
 <table id="eventlist">
   <tr>
     <th>Name</th>
-    <th>Owner</th>
     <th>Location</th>
     <th>Starts At</th>
-    <th>Ends At</th>
     <th>Status</th>
   </tr>
-  
+
 <% for event in @events %>
   <tr class="<%= event.status %>_event">
     <td>
       <%= link_to event.name, :action => 'show', :id => event.id %>
     </td>
-    <td>
-      <% if event.member %>
-          <%= link_to event.member.name, 
-              :controller => 'members', 
-              :action => 'show',
-              :id => event.member.id %>
-      <% else %>
-        <span class="attention">no one</span> 
-        (<%= link_to 'claim',
-            {:action => 'claim',
-             :id => event.id },
-             :confirm => 'Are you sure?' %>)
-      <% end %>
-    </td>
-    <% if event.location.nil? %>
+    <% unless event.location %>
       <td><i>unknown</i></td>
     <% else %>
       <td>
-        <%= link_to event.location.name, 
-            :controller => 'locations', 
-            :action => 'show', 
-            :id => event.location.id 
-        %>
-        </td>
+        <%= link_to event.location.name, location_path(event.location) %>
+      </td>
     <% end %>
     <td><%= event.starts_at.strftime('%a %b %d %Y at %I:%M%p') %></td>
-    <td><%= event.ends_at.strftime('%a %b %d %Y at %I:%M%p') %></td>
     <td><%= event.status %></td>
-    <% if session[:member] && event.member && (session[:member].id == event.member_id) %>
-      <td><%= link_to 'Edit', :action => 'edit', :id => event %></td>
-    <% unless event.cancelled? or event.ended? %>
-      <td><%= link_to 'Cancel', {:action => 'cancel', :id => event}, :confirm => 'Are you sure?' %></td>
-    <% end %>
-    <% end %>
   </tr>
 <% end %>
 </table>

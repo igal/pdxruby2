@@ -1,48 +1,67 @@
-<p>
-  <b>Member:</b>
-  <%=h @event.member_id %>
+<h2><%= @event.name %></h2>
+
+<% if @event.cancelled? %>
+  <h3>This event has been cancelled.</h3>
+<% end %>
+
+<p>Organized by
+  <% if @event.member %>
+    <%= link_to @event.member.name, member_path(@event.member) %>
+  <% else %>
+    no one
+  <% end %>
 </p>
 
 <p>
-  <b>Location:</b>
-  <%=h @event.location_id %>
+  Time:
+  <%= @event.starts_at.strftime('%a %b %d %Y at %I:%M%p') %>
+  &mdash;
+  <%= @event.ends_at.strftime('%a %b %d %Y at %I:%M%p') %>
 </p>
+
+<p>Location:
+  <% if @event.location %>
+    <%= link_to @event.location.name, location_path(@event.location) %>,
+    <%= @event.location.address %>
+  <% else %>
+    To be decided
+  <% end %>
+</p>
+
+<h3>Agenda</h3>
+<p><%= textilize @event.agenda %></p>
+
+<% unless @event.minutes.empty? -%>
+  <h3>Minutes</h3>
+  <%= textilize @event.minutes %>
+<% end -%>
+
+<hr/>
+
+<% if session[:member] == @event.member %>
+  <p>
+    <%= link_to 'Edit this event', edit_event_path(@event) %> |
+    <%= link_to 'Destroy this event', event_path(@event), :method => :delete, :confirm => 'Destroy this event?' %>
+    <% if false %><%# FIXME grant access to event %>
+      <% if @event.member == session[:member] %>
+      | <%= link_to 'Give up ownership',
+          :action => 'release',
+          :id => @event,
+          :confirm => 'Are you sure?' %>
+      <% end %>
+    <% end %>
+  </p>
+<% end %>
+
+<% if false %><%# FIXME grant access to event %>
+  <% if @event.unclaimed? and session[:member] %>
+    <%= link_to 'Claim ownership',
+        :action => 'claim',
+        :id => @event,
+        :confirm => 'Are you sure?' %>
+  <% end %>
+<% end %>
 
 <p>
-  <b>Name:</b>
-  <%=h @event.name %>
+  <%= link_to 'Browse other events', events_path %>
 </p>
-
-<p>
-  <b>Starts at:</b>
-  <%=h @event.starts_at %>
-</p>
-
-<p>
-  <b>Ends at:</b>
-  <%=h @event.ends_at %>
-</p>
-
-<p>
-  <b>Agenda:</b>
-  <%=h @event.agenda %>
-</p>
-
-<p>
-  <b>Created at:</b>
-  <%=h @event.created_at %>
-</p>
-
-<p>
-  <b>Minutes:</b>
-  <%=h @event.minutes %>
-</p>
-
-<p>
-  <b>Status:</b>
-  <%=h @event.status %>
-</p>
-
-
-<%= link_to 'Edit', edit_event_path(@event) %> |
-<%= link_to 'Back', events_path %>

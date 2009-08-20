@@ -1,20 +1,30 @@
 class EventsController < ApplicationController
+  before_filter :assign_event_or_redirect, :only => [:show, :edit, :update, :destroy]
+  before_filter :assign_locations, :only => [:new, :edit]
+
   # GET /events
   # GET /events.xml
   def index
-    @events = Event.paginate(:page => params[:page])
+    events_callback = lambda { Event.paginate(:page => params[:page], :order => 'ends_at desc') }
 
     respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @events }
+      format.ics {
+        @events = Event.recent
+      }
+      format.html { 
+        # index.html.erb 
+        @events = events_callback.call
+      }
+      format.xml  { 
+        @events = events_callback.call
+        render :xml => @events 
+      }
     end
   end
 
   # GET /events/1
   # GET /events/1.xml
   def show
-    @event = Event.find(params[:id])
-
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @event }
@@ -25,6 +35,7 @@ class EventsController < ApplicationController
   # GET /events/new.xml
   def new
     @event = Event.new
+    @location = Location.new
 
     respond_to do |format|
       format.html # new.html.erb
@@ -34,16 +45,21 @@ class EventsController < ApplicationController
 
   # GET /events/1/edit
   def edit
-    @event = Event.find(params[:id])
   end
 
   # POST /events
   # POST /events.xml
   def create
     @event = Event.new(params[:event])
+    @location = nil
+
+    if params[:location]
+      @location = Location.new(params[:location])
+      @event.location = @location
+    end
 
     respond_to do |format|
-      if @event.save
+      if (@location ? @location.save : true) and @event.save
         flash[:notice] = 'Event was successfully created.'
         format.html { redirect_to(@event) }
         format.xml  { render :xml => @event, :status => :created, :location => @event }
@@ -57,8 +73,6 @@ class EventsController < ApplicationController
   # PUT /events/1
   # PUT /events/1.xml
   def update
-    @event = Event.find(params[:id])
-
     respond_to do |format|
       if @event.update_attributes(params[:event])
         flash[:notice] = 'Event was successfully updated.'
@@ -74,12 +88,33 @@ class EventsController < ApplicationController
   # DELETE /events/1
   # DELETE /events/1.xml
   def destroy
-    @event = Event.find(params[:id])
     @event.destroy
 
     respond_to do |format|
-      format.html { redirect_to(events_url) }
+      format.html { redirect_to(events_path) }
       format.xml  { head :ok }
     end
   end
+
+  def add_location
+    render :layout => false
+  end
+
+protected
+
+  def assign_event_or_redirect
+    @event = Event.find_by_id(params[:id])
+    if @event
+      @location = @event.location
+      return false
+    else
+      flash[:notice] = "No such event, it may have been deleted."
+      return redirect_to(events_path)
+    end
+  end
+
+  def assign_locations
+    @locations = Location.all
+  end
+
 end
