@@ -13,4 +13,6 @@
 
 class Location < ActiveRecord::Base
   has_many :events
+
+  has_paper_trail
 end

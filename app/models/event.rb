@@ -24,6 +24,8 @@ class Event < ActiveRecord::Base
   default_scope :order => 'ends_at desc'
   named_scope :recent, :order => 'ends_at desc', :limit => 5
 
+  has_paper_trail
+
   # Return iCalendar data for the given events.
   #
   # Options:
