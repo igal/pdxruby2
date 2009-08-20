@@ -1,4 +1,8 @@
 class LocationsController < ApplicationController
+  before_filter :require_user, :only => [:new, :create, :edit, :update, :destroy]
+  before_filter :assign_location_or_redirect, :only => [:show, :edit, :update, :destroy]
+  before_filter :require_owner_or_redirect, :only => [:edit, :update, :destroy]
+
   # GET /locations
   # GET /locations.xml
   def index
@@ -13,8 +17,6 @@ class LocationsController < ApplicationController
   # GET /locations/1
   # GET /locations/1.xml
   def show
-    @location = Location.find(params[:id])
-
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @location }
@@ -34,7 +36,6 @@ class LocationsController < ApplicationController
 
   # GET /locations/1/edit
   def edit
-    @location = Location.find(params[:id])
   end
 
   # POST /locations
@@ -57,8 +58,6 @@ class LocationsController < ApplicationController
   # PUT /locations/1
   # PUT /locations/1.xml
   def update
-    @location = Location.find(params[:id])
-
     respond_to do |format|
       if @location.update_attributes(params[:location])
         flash[:notice] = 'Location was successfully updated.'
@@ -74,12 +73,33 @@ class LocationsController < ApplicationController
   # DELETE /locations/1
   # DELETE /locations/1.xml
   def destroy
-    @location = Location.find(params[:id])
     @location.destroy
 
     respond_to do |format|
       format.html { redirect_to(locations_url) }
       format.xml  { head :ok }
+    end
+  end
+
+protected
+
+  def assign_location_or_redirect
+    begin
+      @location = Location.find(params[:id])
+      return false
+    rescue ActiveRecord::RecordNotFound => e
+      flash[:notice] = "No such location, maybe it was deleted."
+      return redirect_back_or_default(locations_path)
+    end
+  end
+
+  def require_owner_or_redirect
+    if current_user == @location.member
+      return false
+    else
+      # TODO allow admins to edit event too
+      flash[:notice] = "You are not allowed to edit this event."
+      return redirect_to locations_path
     end
   end
 end
