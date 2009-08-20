@@ -1,4 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
+  #===[ Routes ]==========================================================
+  # The "/*/show/:id" and "/*/list" routes are for backwards compatibility
+
   map.connect '/members/show/:id', :controller => 'members', :action => 'show'
   map.connect '/members/list',     :controller => 'members', :action => 'index'
   map.resources :members
@@ -16,6 +19,11 @@ ActionController::Routing::Routes.draw do |map|
   map.login  '/login',  :controller => 'member_sessions', :action => 'login'
   map.logout '/logout', :controller => 'member_sessions', :action => 'logout'
   # TODO add password reset
+  
+  # Backwards compatible with old site
+  map.connect '/pdx.rb.ics', :controller => 'events', :action => 'index', :format => 'ical'
+
+  #===[ Documentation ]===================================================
 
   # The priority is based upon order of creation: first created -> highest priority.
 
