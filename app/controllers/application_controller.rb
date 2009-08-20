@@ -21,7 +21,12 @@ protected
 
   def current_user_session
     return @current_user_session if defined?(@current_user_session)
-    @current_user_session = MemberSession.find
+    begin
+      @current_user_session = MemberSession.find
+    rescue Exception => e
+      # WTF?
+      @current_user_session = nil
+    end
   end
   
   def current_user
