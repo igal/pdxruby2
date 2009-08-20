@@ -1,0 +1,10 @@
+<li>
+<p><b>
+<%= link_to event.name,
+    :controller => 'events',
+    :action     => 'show',
+    :id         => event.id %></b>
+<br/>
+<%= event.starts_at.strftime('%a %b %d %Y at %I:%M%p')%> @ <%= event.location.name %>
+</p>
+</li>
