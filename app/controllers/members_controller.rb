@@ -1,6 +1,6 @@
 class MembersController < ApplicationController
   before_filter :require_user, :only => [:index, :show, :edit, :update, :destroy]
-  before_filter :assign_user, :only => [:show, :edit, :update, :destroy]
+  before_filter :assign_user_or_redirect, :only => [:show, :edit, :update, :destroy]
   before_filter :require_privileges_for_user, :only => [:edit, :update, :destroy]
 
   # GET /members
@@ -55,7 +55,7 @@ class MembersController < ApplicationController
     respond_to do |format|
       if @member.save
         flash[:notice] = 'Member was successfully created.'
-        format.html { redirect_to(@member) }
+        format.html { redirect_to(member_path(@member)) }
         format.xml  { render :xml => @member, :status => :created, :location => @member }
       else
         format.html { render :action => "new" }
@@ -73,14 +73,14 @@ class MembersController < ApplicationController
       else
         flash[:notice] = "ERROR: Passwords were not the same."
         render :action => "edit"
-        return false
+        return
       end
     end
 
     respond_to do |format|
       if @member.update_attributes(params[:member])
         flash[:notice] = 'Member was successfully updated.'
-        format.html { redirect_to(@member) }
+        format.html { redirect_to(member_path(@member)) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -102,11 +102,11 @@ class MembersController < ApplicationController
 
 protected
 
-  def assign_user
-    @member = Member.find_by_id(params[:id])
-    if @member
+  def assign_user_or_redirect
+    begin
+      @member = Member.find(params[:id])
       return false
-    else
+    rescue ActiveRecord::RecordNotFound => e
       flash[:notice] = "Member not found, maybe they were deleted."
       return redirect_back_or_default(members_path)
     end
@@ -117,7 +117,7 @@ protected
       return false
     else
       flash[:notice] = "You are not allowed to edit this user's account"
-      return redirect_back_or_default(members_path)
+      return redirect_back_or_default(member_path(@member))
     end
   end
 end
