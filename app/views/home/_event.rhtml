@@ -1,10 +1,15 @@
 <li>
-<p><b>
-<%= link_to event.name,
-    :controller => 'events',
-    :action     => 'show',
-    :id         => event.id %></b>
-<br/>
-<%= event.starts_at.strftime('%a %b %d %Y at %I:%M%p')%> @ <%= event.location.name %>
-</p>
+  <p>
+    <b><%= link_to event.name, event_path(event) %></b>
+
+    <br/>
+
+    <% if event.starts_at %>
+      <%= event.starts_at.strftime('%a %b %d %Y at %I:%M%p')%> 
+    <% end %>
+
+    <% if event.location %>
+      @ <%= event.location.name %>
+    <% end %>
+  </p>
 </li>
