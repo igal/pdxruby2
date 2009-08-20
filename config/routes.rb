@@ -1,8 +1,14 @@
 ActionController::Routing::Routes.draw do |map|
+  map.connect '/members/show/:id', :controller => 'members', :action => 'show'
+  map.connect '/members/list',     :controller => 'members', :action => 'index'
   map.resources :members
 
+  map.connect '/locations/show/:id', :controller => 'locations', :action => 'show'
+  map.connect '/locations/list',     :controller => 'locations', :action => 'index'
   map.resources :locations
 
+  map.connect '/events/show/:id', :controller => 'events', :action => 'show'
+  map.connect '/events/list',     :controller => 'events', :action => 'index'
   map.resources :events, :collection => {:add_location => :post}
 
   map.root :controller => "home"
