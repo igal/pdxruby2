@@ -15,6 +15,10 @@ class EventsController < ApplicationController
         @events = Event.recent
         render :text => Event.to_icalendar(@events)
       }
+      format.atom {
+        # index.atom.builder
+        @events = events_callback.call
+      }
       format.html { 
         # index.html.erb 
         @events = events_callback.call

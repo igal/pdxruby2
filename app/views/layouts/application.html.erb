@@ -3,13 +3,15 @@
 <html lang="en">
 
   <head>
-  	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  	<meta http-equiv="Content-Language" content="en-us">
-  	<meta name="copyright" content="(c) Copyright 2005 John Labovitz">
-        <%= stylesheet_link_tag 'stylesheet' %>
-        <%= stylesheet_link_tag 'scaffold' %>
-        <%= javascript_include_tag 'prototype' %>
-  	<title>The Portland Ruby Brigade (PDX.rb)</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="Content-Language" content="en-us">
+    <meta name="copyright" content="(c) Copyright 2005 John Labovitz">
+    <%= stylesheet_link_tag 'stylesheet' %>
+    <%= stylesheet_link_tag 'scaffold' %>
+    <%= javascript_include_tag 'prototype' %>
+    <%= auto_discovery_link_tag(:atom, formatted_events_path(:atom), :title => "Portland Ruby Brigade events") %>
+
+    <title>The Portland Ruby Brigade (PDX.rb)</title>
   </head>
 
   <body>
