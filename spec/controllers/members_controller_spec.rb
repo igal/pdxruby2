@@ -18,13 +18,7 @@ describe MembersController do
   end
 
   describe "GET index" do
-    it "should not allow anonymous access" do
-      get :index
-      response.should redirect_to(login_path)
-    end
-
     it "assigns all members as @members" do
-      login_as "aaron"
       Member.stub!(:find).with(:all).and_return([mock_member])
       get :index
       assigns[:members].should == [mock_member]
@@ -32,13 +26,7 @@ describe MembersController do
   end
 
   describe "GET show" do
-    it "should not allow anonymous access" do
-      get :show, :id => "37"
-      response.should redirect_to(login_path)
-    end
-
     it "assigns the requested member as @member" do
-      login_as "aaron"
       Member.stub!(:find).with("37").and_return(mock_member)
       get :show, :id => "37"
       assigns[:member].should equal(mock_member)

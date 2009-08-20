@@ -32,7 +32,7 @@
      </p>
    <% end %>
 
-    <% unless @member.email.blank? %>
+    <% if logged_in? and not @member.email.blank? %>
       <p>
         <b>Email:</b> <%= link_to h(@member.email), "mailto:#{@member.email}" %>
       </p>

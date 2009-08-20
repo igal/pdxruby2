@@ -32,8 +32,8 @@
       <ul>
         <li><%= link_to 'Home', root_path %></li>
         <li><%= link_to 'Events', events_path %></li>
+        <li><%= link_to 'Members', members_path %></li>
         <% if logged_in?%>
-          <li><%= link_to 'Members', members_path %></li>
           <li>
             <dl>
               <dt><%= h current_user.name %></dt>

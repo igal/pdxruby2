@@ -3,13 +3,17 @@
 <table id="memberlist">
   <tr>
    <th>Name</td>
-   <th>Email</td>
+   <% if logged_in? %>
+    <th>Email</td>
+   <% end %>
   </tr>
 
 <% for member in @members %>
   <tr>
     <td><%= link_to h(member.name), member_path(member) %></td>
-    <td><%= link_to h(member.email), "mailto:#{member.email}" %></td>
+    <% if logged_in? %>
+      <td><%= link_to h(member.email), "mailto:#{member.email}" %></td>
+    <% end %>
   </tr>
 <% end %>
 </table>
