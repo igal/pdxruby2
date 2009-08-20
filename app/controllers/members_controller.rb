@@ -67,7 +67,11 @@ class MembersController < ApplicationController
   # PUT /members/1
   # PUT /members/1.xml
   def update
-    if params[:member_password]
+    if current_user.admin?
+      @member.admin = params[:member][:admin]
+    end
+
+    unless params[:member_password].blank?
       if params[:member_password] == params[:member_verify_password]
         @member.password = params[:member_password]
       else

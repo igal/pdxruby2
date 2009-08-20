@@ -28,7 +28,7 @@
 
     <% unless @member.email.blank? %>
       <p>
-        <b>Email:</b> <%= link_to h("mailto:#{@member.email}"), @member.email %>
+        <b>Email:</b> <%= link_to h(@member.email), "mailto:#{@member.email}" %>
       </p>
     <% end %>
 
