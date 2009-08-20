@@ -14,5 +14,8 @@
 class Location < ActiveRecord::Base
   has_many :events
 
+  validates_presence_of :name
+  validates_presence_of :address
+
   has_paper_trail
 end
