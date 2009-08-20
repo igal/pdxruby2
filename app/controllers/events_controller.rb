@@ -1,4 +1,7 @@
 class EventsController < ApplicationController
+  # FIXME anyone user can edit locations and there's no versioning, which is bad
+  
+  before_filter :require_user, :only => [:new, :create, :edit, :update, :destroy]
   before_filter :assign_event_or_redirect, :only => [:show, :edit, :update, :destroy]
   before_filter :assign_locations, :only => [:new, :edit]
 
@@ -104,13 +107,12 @@ class EventsController < ApplicationController
 protected
 
   def assign_event_or_redirect
-    @event = Event.find_by_id(params[:id])
-    if @event
-      @location = @event.location
+    begin
+      @event = Event.find(params[:id])
       return false
-    else
+    rescue ActiveRecord::RecordNotFound => e
       flash[:notice] = "No such event, it may have been deleted."
-      return redirect_to(events_path)
+      return redirect_back_or_default(events_path)
     end
   end
 
