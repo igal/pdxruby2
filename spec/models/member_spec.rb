@@ -29,8 +29,14 @@ describe Member do
     }
   end
 
-  it "should create a new instance given valid attributes" do
-    Member.create!(@valid_attributes)
+  it "should not create a new instance with default arguments because password shouldn't be mass-assigned" do
+    lambda { Member.create!(@valid_attributes) }.should raise_error(ActiveRecord::RecordInvalid)
+  end
+
+  it "should create a new instance if password is set" do
+    member = Member.new(@valid_attributes)
+    member.password = "password"
+    member.save.should be_true
   end
 
   describe "authentication" do
