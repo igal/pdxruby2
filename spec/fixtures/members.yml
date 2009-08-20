@@ -17,18 +17,10 @@
 
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
-one:
-  name: MyString
-  email: MyString
-  password: MyString
-  feed_url: MyString
-  about: MyText
-  created_at: 2009-08-19 10:15:10
-
-two:
-  name: MyString
-  email: MyString
-  password: MyString
-  feed_url: MyString
-  about: MyText
+aaron:
+  name: Aaron Aardvark
+  email: aaron@aardvark.com
+  password: <%= Member.hashed_password "password" %>
+  feed_url: "http://aardvark.com/~aaron/index.rss"
+  about: "Aaron is an Aardvark"
   created_at: 2009-08-19 10:15:10
