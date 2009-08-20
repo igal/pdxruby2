@@ -1,0 +1,13 @@
+*.log
+*.pid
+.*.swp
+.idea/
+/*.diff
+/*.sql
+/*.tmp
+config/settings.yml
+coverage/
+db/schema.rb
+db/*.sqlite3
+public/images/members/
+tags
