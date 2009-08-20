@@ -13,6 +13,7 @@
       <br />
       <%= f.collection_select :location_id, @locations, :id, :name  %>
       <%= link_to_remote "Add New", :update => 'location_select', :url => add_location_events_path %>
+    </p>
   </div>
 
   <p>
