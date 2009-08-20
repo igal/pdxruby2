@@ -1,0 +1,48 @@
+<p>
+  <b>Member:</b>
+  <%=h @event.member_id %>
+</p>
+
+<p>
+  <b>Location:</b>
+  <%=h @event.location_id %>
+</p>
+
+<p>
+  <b>Name:</b>
+  <%=h @event.name %>
+</p>
+
+<p>
+  <b>Starts at:</b>
+  <%=h @event.starts_at %>
+</p>
+
+<p>
+  <b>Ends at:</b>
+  <%=h @event.ends_at %>
+</p>
+
+<p>
+  <b>Agenda:</b>
+  <%=h @event.agenda %>
+</p>
+
+<p>
+  <b>Created at:</b>
+  <%=h @event.created_at %>
+</p>
+
+<p>
+  <b>Minutes:</b>
+  <%=h @event.minutes %>
+</p>
+
+<p>
+  <b>Status:</b>
+  <%=h @event.status %>
+</p>
+
+
+<%= link_to 'Edit', edit_event_path(@event) %> |
+<%= link_to 'Back', events_path %>

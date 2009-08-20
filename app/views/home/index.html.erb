@@ -1,0 +1,40 @@
+<h2>Who are we?</h2>
+
+<p>The Portland Ruby Brigade is a user group for Ruby programmers in the Portland, Oregon area.
+
+<h2>Join us! We don't bite!</h2>
+
+<p>We're a friendly group that freely shares knowledge about the Ruby programming language, its libraries and frameworks, such as Ruby on Rails. The group meets regularly on <i>Ruby Tuesday</i>, the first Tuesday of each month for presentations, demos and discussions. Meetings are free and open to the public. Developers with any level of Ruby experience are welcomed to participate.</p>
+
+<h2>Resources</h2>
+<ul>
+  <li>
+    <a href="http://groups.google.com/group/pdxruby">Subscribe to our mailing list: "pdxruby"</a>
+  </li>
+  <li>
+    <a href="http://twitter.com/pdxruby">Follow us on Twitter: "pdxruby"</a>
+  </li>
+  <li>
+    <a href="irc://irc.freenode.net/#pdx.rb">Chat with us on IRC: "#pdx.rb"</a>
+  </li>
+</ul>
+
+<h2>Events</h2>
+  <p>
+  <a href="webcal://pdxruby.org/events/ical">Subscribe</a> or <a href="http://pdxruby.org/events/ical">download</a> events.
+  </p>
+
+<h5>Upcoming events</h5>
+<ul>
+  <%= render :partial => 'event', :collection => @upcoming_events %>
+</ul>
+
+<h5>Past events</h5>
+<ul>
+  <%= render :partial => 'event', :collection => @recent_events %>
+  <li><p><a href="/events/list">More...</a></p></li>
+</ul>
+
+<h2>Thanks to...</h2>
+
+<p><a href="http://www.robbyonrails.com/">Robby Russell</a> and <a href="http://www.planetargon.com/" target="_blank">Planet Argon</a> for kindly serving up this site.
