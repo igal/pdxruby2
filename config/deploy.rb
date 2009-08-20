@@ -65,8 +65,8 @@ namespace :deploy do
     run "mkdir -p #{shared_path}/db"
   end
 
-  desc "Set the application's settings"
-  task :settings_yml do
+  desc "Symlink the application's settings"
+  task :link_settings_yml do
     source = "#{shared_path}/config/settings.yml"
     target = "#{release_path}/config/settings.yml"
     begin
@@ -83,8 +83,8 @@ ERROR!  You must have a file on your server with configuration information.
     end
   end
 
-  desc "Generate database.yml"
-  task :database_yml do
+  desc "Symlink the database settings"
+  task :link_database_yml do
     source = "#{shared_path}/config/database.yml"
     target = "#{release_path}/config/database.yml"
     begin
@@ -101,9 +101,14 @@ ERROR!  You must have a file on your server with the database configuration.
     end
   end
 
-  desc "Set the application's theme"
-  task :theme_txt do
-    run "echo #{theme} > #{release_path}/config/theme.txt"
+  desc "Link the member images"
+  task :link_member_images do
+    source = "#{shared_path}/system/member_images"
+    target = "#{release_path}/public/images/members"
+
+    run %{if test ! -f #{source}; then mkdir -p #{source}; fi}
+    run %{mv #{target} #{target}.bak}
+    run %{ln -nsf #{source} #{target}}
   end
 
   desc "Clear the application's cache"
@@ -112,13 +117,27 @@ ERROR!  You must have a file on your server with the database configuration.
   end
 end
 
+desc "Upload member images"
+task :upload_member_images do
+  source = "#{File.expand_path(File.dirname(File.dirname(__FILE__)))}/public/images/members/"
+  target = "#{shared_path}/system/member_images/"
+  system "(cd #{source} && rsync -uvax . #{user}@#{host}:#{target})"
+end
+
+desc "Download member images"
+task :download_member_images do
+  target = "#{File.expand_path(File.dirname(File.dirname(__FILE__)))}/public/images/members/"
+  source = "#{shared_path}/system/member_images/"
+  system "(cd #{target} && rsync -uvax #{user}@#{host}:#{source} .)"
+end
+
 # After setup
 after "deploy:setup", "deploy:prepare_shared"
 
 # After finalize_update
-after "deploy:finalize_update", "deploy:database_yml"
-after "deploy:finalize_update", "deploy:settings_yml"
-after "deploy:finalize_update", "deploy:theme_txt"
+before "deploy:finalize_update", "deploy:link_database_yml"
+before "deploy:finalize_update", "deploy:link_settings_yml"
+before "deploy:finalize_update", "deploy:link_member_images"
 
 # After symlink
 after "deploy:symlink", "deploy:clear_cache"
