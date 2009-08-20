@@ -21,6 +21,6 @@ class MemberSessionsController < ApplicationController
      else
        flash[:notice] = "You are not logged in!"
      end
-     redirect_back_or_default root_path
+     redirect_to root_path
   end
 end
