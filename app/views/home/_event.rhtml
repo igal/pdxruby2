@@ -1,15 +1,17 @@
 <li>
   <p>
-    <b><%= link_to event.name, event_path(event) %></b>
+    <b><%= link_to h(event.name), event_path(event) %></b>
 
     <br/>
 
     <% if event.starts_at %>
-      <%= event.starts_at.strftime('%a %b %d %Y at %I:%M%p')%> 
+      <%= event.starts_at.to_s(:usual) %>
+      &ndash;
+      <%= event.ends_at.to_s(:brief) %>
     <% end %>
 
     <% if event.location %>
-      @ <%= event.location.name %>
+      at <%= h event.location.name %>
     <% end %>
   </p>
 </li>

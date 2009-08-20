@@ -6,8 +6,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta http-equiv="Content-Language" content="en-us">
     <meta name="copyright" content="(c) Copyright 2005 John Labovitz">
-    <%= stylesheet_link_tag 'stylesheet' %>
     <%= stylesheet_link_tag 'scaffold' %>
+    <%= stylesheet_link_tag 'stylesheet' %>
     <%= javascript_include_tag 'prototype' %>
     <%= auto_discovery_link_tag(:atom, formatted_events_path(:atom), :title => "Portland Ruby Brigade events") %>
 
@@ -36,7 +36,7 @@
           <li><%= link_to 'Members', members_path %></li>
           <li>
             <dl>
-              <dt><%= current_user.name %></dt>
+              <dt><%= h current_user.name %></dt>
               <dd>
                 <ul>
                   <li><%= link_to 'Settings', member_path(current_user) %></li>
@@ -57,7 +57,7 @@
         <p class="flash"><%= flash[:notice] %></p>
       <% end %>
 
-      <%= @content_for_layout %>
+      <%= yield %>
     </div>
 
   </body>

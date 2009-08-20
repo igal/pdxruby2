@@ -11,20 +11,26 @@ A:link {
 }
 
 A:visited {
-  color: #009;
+  color: #5C0099;
   text-decoration: none;
   font-weight: bold;
 }
 
 A:hover {
-  color: #00f;
+  background: #F3EE6A;
   font-weight: bold;
+}
+
+th, 
+td {
+  text-align: left;
+  vertical-align: top;
 }
 
 /*
  * banner
  */
- 
+
 #banner {
   height: 8em;
 }
@@ -48,7 +54,7 @@ A:hover {
 /*
  * sidebar
  */
- 
+
 #sidebar {
   position: absolute
   top: 8em;
@@ -70,7 +76,7 @@ A:hover {
 /*
  * content
  */
- 
+
 #content {
   position: absolute;
   top: 8em;
@@ -131,14 +137,12 @@ table#eventlist tr.cancelled_event {
 
 /*---[ changes ]------------------------------------------------------*/
 
-#changes_table th, 
+#changes_table th,
 #changes_table td {
-  text-align: left;
-  vertical-align: top;
   padding: 0.25em;
 }
 
-#changes_table, 
+#changes_table,
 .changes_details_table {
   width: 100%;
 }
@@ -151,7 +155,7 @@ table#eventlist tr.cancelled_event {
   width: 90%;
 }
 
-#changes_table .change_time, 
+#changes_table .change_time,
 #changes_table .change_details {
   padding-bottom: 1em;
 }

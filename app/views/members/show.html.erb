@@ -1,8 +1,11 @@
 <h3>Profile</h3>
 <blockquote>
-  <% if (logged_in? and current_user.id  == params[:id].to_i) %>
+  <% if @member.can_alter?(current_user) %>
     <div style="float:right">
-      <%= link_to 'Edit', :action => 'edit', :id => @member %>
+      <%= link_to 'Edit', edit_member_path(@member) %>
+      <% if current_user.admin? %>
+        | <%= link_to 'Destroy', member_path(@member), :method => :delete, :confirm => "Destroy this user?" %>
+      <% end %>
     </div>
   <% end %>
   <p>
@@ -19,17 +22,15 @@
 
    <% unless @member.feed_url.blank? %>
      <p>
-       <b>Feed URL:</b> <%= link_to @member.feed_url, h(@member.feed_url) %>
+       <b>Feed URL:</b> <%= link_to h(@member.feed_url), @member.feed_url %>
      </p>
    <% end %>
 
-   <% if false %><# FIXME show email addresses or not? %>
-     <% unless @member.email.blank? %>
-       <p>
-         <b>Email:</b> <%= h(@member.email) %>
-       </p>
-     <% end %>
-   <% end %>
+    <% unless @member.email.blank? %>
+      <p>
+        <b>Email:</b> <%= link_to h("mailto:#{@member.email}"), @member.email %>
+      </p>
+    <% end %>
 
    <% unless @member.irc_nick.blank? %>
      <p>

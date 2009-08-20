@@ -1,4 +1,12 @@
 module HomeHelper
+  def text_or_nil(object)
+    if object.nil?
+      return content_tag("em", "nil")
+    else
+      return h(object)
+    end
+  end
+
   def changes_for(version)
     changes = {}
 

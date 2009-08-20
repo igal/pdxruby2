@@ -1,0 +1,24 @@
+<% form_for(@location) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label :address %><br />
+    <%= f.text_area :address %>
+  </p>
+  <p>
+    <%= f.label :homepage %><br />
+    <%= f.text_field :homepage %>
+  </p>
+  <p>
+    <%= f.submit @location.new_record? ? 'Create' : 'Update' %>
+  </p>
+<% end %>
+
+<% unless @location.new_record? %>
+  <%= link_to 'Show', @location %> |
+<% end %>
+<%= link_to 'Cancel', locations_path %>

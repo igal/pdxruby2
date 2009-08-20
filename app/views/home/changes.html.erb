@@ -19,7 +19,7 @@
           <b><%= version.event %></b>
           <% if version.whodunnit %>
           <% if user = Member.find(version.whodunnit) rescue nil %>
-          by <%= link_to user.name, member_path(user) %>
+          by <%= link_to h(user.name), member_path(user) %>
           <% end %>
           <% end %>
         </p>
@@ -33,11 +33,11 @@
                 <b><%= key %></b>
               </td>
               <td class="change_detail_value">
-                <%= changes[key][0].inspect %>
+                <%= text_or_nil(changes[key][0]) %>
               </td>
               <td class="change_detail_spacer">&larr;</td>
               <td class="changes_detail_value">
-                <%= changes[key][1].inspect %>
+                <%= text_or_nil(changes[key][1]) %>
               </td>
             </tr>
           <% end %>

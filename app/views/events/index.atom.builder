@@ -11,7 +11,7 @@ atom_feed do |feed|
       xm.div {
         xm.p {
           xm.b "Time: "
-          xm.span << "#{event.starts_at.strftime('%a %b %d %Y at %I:%M%p')} &mdash; #{event.ends_at.strftime('%a %b %d %Y at %I:%M%p')}"
+          xm.span << "#{event.starts_at.to_s(:usual)} &mdash; #{event.ends_at.to_s(:brief)}"
         }
         if event.location
           xm.p {

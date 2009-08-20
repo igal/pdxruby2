@@ -5,29 +5,32 @@
     <th>Name</th>
     <th>Location</th>
     <th>Starts At</th>
-    <th>Status</th>
   </tr>
 
 <% @events.each do |event| %>
-  <tr class="<%= event.status %>_event">
+  <tr class="<%= event.cancelled? ? 'cancelled' : 'active' %>_event">
     <td>
-      <%= link_to event.name, event_path(event) %>
+      <%= 'CANCELLED:' if event.cancelled? %>
+      <%= link_to h(event.name), event_path(event) %>
     </td>
     <% unless event.location %>
       <td><i>unknown</i></td>
     <% else %>
       <td>
-        <%= link_to event.location.name, location_path(event.location) %>
+        <%= link_to h(event.location.name), location_path(event.location) %>
       </td>
     <% end %>
-    <td><%= event.starts_at.strftime('%a %b %d %Y at %I:%M%p') %></td>
-    <td><%= event.status %></td>
+    <td>
+      <%= event.starts_at.to_s(:usual) %>
+      &mdash;
+      <%= event.ends_at.to_s(:brief) %>
+    </td>
   </tr>
 <% end %>
 </table>
 
 <%= will_paginate @events %>
 
-<br />
-
-<%= link_to 'New event', :action => 'new' %>
+<p>
+  <%= link_to 'New event', :action => 'new' %>
+</p>

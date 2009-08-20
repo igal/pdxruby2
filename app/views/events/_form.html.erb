@@ -1,7 +1,3 @@
-<h1>
-  <%= @event.new_record? ? "New event" : "Editing event" %>
-</h1>
-
 <% form_for @event do |f| %>
 
   <%= error_messages_for 'event' %>
@@ -12,7 +8,7 @@
       <%= f.label :location_id, "Location (leave blank for other)" %>
       <br />
       <%= f.collection_select :location_id, @locations, :id, :name  %>
-      <%= link_to_remote "Add New", :update => 'location_select', :url => add_location_events_path %>
+      <%= link_to_remote "Add new", :update => 'location_select', :url => add_location_events_path %>
     </p>
   </div>
 
@@ -55,7 +51,9 @@
   <%= f.submit(@event.new_record? ? "Create" : "Update") %>
 <% end %>
 
-<% unless @event.new_record? %>
-  <%= link_to 'Show this event', event_path(@event) %> |
-<% end %>
-<%= link_to 'Browse events', events_path %>
+<p>
+  <% unless @event.new_record? %>
+    <%= link_to 'Show this event', event_path(@event) %> |
+  <% end %>
+  <%= link_to 'Browse events', events_path %>
+</p>

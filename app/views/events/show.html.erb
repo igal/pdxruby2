@@ -6,7 +6,7 @@
 
 <p>Organized by
   <% if @event.member %>
-    <%= link_to @event.member.name, member_path(@event.member) %>
+    <%= link_to h(@event.member.name), member_path(@event.member) %>
   <% else %>
     no one
   <% end %>
@@ -14,9 +14,9 @@
 
 <p>
   Time:
-  <%= @event.starts_at.strftime('%a %b %d %Y at %I:%M%p') %>
+  <%= @event.starts_at.to_s(:usual) %>
   &mdash;
-  <%= @event.ends_at.strftime('%a %b %d %Y at %I:%M%p') %>
+  <%= @event.ends_at.to_s(:brief) %>
 </p>
 
 <p>Location:
@@ -38,30 +38,10 @@
 
 <hr/>
 
-<% if logged_in? %>
-  <% if current_user == @event.member %>
-    <p>
-      <%= link_to 'Edit this event', edit_event_path(@event) %> |
-      <%= link_to 'Destroy this event', event_path(@event), :method => :delete, :confirm => 'Destroy this event?' %>
-      <% if false %><%# FIXME release access to event %>
-      | <%= link_to 'Give up ownership',
-          :action => 'release',
-          :id => @event,
-          :confirm => 'Are you sure?' %>
-      <% end %>
-    </p>
-  <% else %>
-    <% if false %><%# FIXME grant access to event %>
-      <% if @event.unclaimed? %>
-        <%= link_to 'Claim ownership',
-            :action => 'claim',
-            :id => @event,
-            :confirm => 'Are you sure?' %>
-      <% end %>
-    <% end %>
-  <% end %>
-<% end %>
-
 <p>
-  <%= link_to 'Browse other events', events_path %>
+  <% if @event.can_alter?(current_user) %>
+    <%= link_to 'Edit', edit_event_path(@event) %> |
+    <%= link_to 'Destroy', event_path(@event), :method => :delete, :confirm => 'Destroy this event?' %> |
+  <% end %>
+  <%= link_to 'Browse events', events_path %>
 </p>

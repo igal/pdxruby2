@@ -52,7 +52,9 @@
   <%= f.submit(@member.new_record? ? 'Create' : 'Update') %>
 <% end %>
 
-<% unless @member.new_record? %>
+<p>
+  <% unless @member.new_record? %>
   <%= link_to 'Show', @member %> |
-<% end %>
-<%= link_to 'Back', members_path %>
+  <% end %>
+  <%= link_to 'Cancel', members_path %>
+</p>
