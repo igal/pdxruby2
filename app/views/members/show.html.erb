@@ -16,6 +16,12 @@
     <% end %>
    </p>
 
+   <% if @member.admin? %>
+   <p style="color: red">
+     <b>Administrator</b>
+   </p>
+   <% end %>
+
    <p>
      <b>Name:</b> <%= h @member.name %>
    </p>

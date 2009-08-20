@@ -1,6 +1,14 @@
 <% form_for @member do |f| %>
   <%= f.error_messages %>
 
+  <% if logged_in? && current_user.admin? %>
+  <p>
+    <%= f.label :admin %>
+    <br/>
+    <%= f.check_box :admin %>
+  </p>
+  <% end %>
+
   <p>
     <%= f.label :name %>
     <br/>

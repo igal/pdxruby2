@@ -44,6 +44,10 @@ class MembersController < ApplicationController
   def create
     @member = Member.new(params[:member])
 
+    if logged_in? && current_user.admin?
+      @member.admin = params[:member][:admin]
+    end
+
     if params[:member_password] == params[:member_verify_password]
       @member.password = params[:member_password]
     else
