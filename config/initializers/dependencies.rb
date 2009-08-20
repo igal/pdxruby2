@@ -1,6 +1,9 @@
 # Standard libraries
 require 'ostruct'
 
+# Monkey patches
+require 'lib/ext/vpim_icalendar_extra_properties.rb'
+
 # Facets
 require 'facets/dictionary'
 require 'facets/enumerable/mash'

@@ -23,6 +23,7 @@ Rails::Initializer.run do |config|
   # For all environments
   config.gem 'RedCloth'
   config.gem 'facets', :lib => false # Selectively loaded by config/initializers/dependencies.rb
+  config.gem 'vpim', :lib => 'vpim/icalendar'
   config.gem 'justinfrench-formtastic', :lib => 'formtastic', :source => 'http://gems.github.com'
   config.gem 'mislav-will_paginate', :lib => 'will_paginate', :source => 'http://gems.github.com'
   config.gem 'authlogic'
