@@ -1,3 +1,4 @@
+<% cache "events-index,page_#{params[:page] || 0}" do %>
 <h1>Listing events</h1>
 
 <table id="eventlist">
@@ -34,3 +35,4 @@
 <p>
   <%= link_to 'New event', :action => 'new' %>
 </p>
+<% end %>

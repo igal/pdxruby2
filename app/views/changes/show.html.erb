@@ -1,3 +1,4 @@
+<% cache "changes-show,page_#{params[:page] || 0}" do %>
 <h1>Changes</h1>
 
 <%= link_to "Changes feed", changes_path(:format => "atom") %>
@@ -15,8 +16,8 @@
       </td>
       <td class="change_details">
         <p class="change_detail_description">
+          <b><%= version.event.titleize %></b>
           <%= link_to "#{version.item_type}##{version.item_id}", url_for(:controller => version.item_type.tableize, :action => "show", :id => version.item_id) %>
-          <b><%= version.event %></b>
           <% if version.whodunnit %>
           <% if user = Member.find(version.whodunnit) rescue nil %>
           by <%= link_to h(user.name), member_path(user) %>
@@ -48,3 +49,4 @@
 </table>
 
 <%= will_paginate @versions %>
+<% end %>

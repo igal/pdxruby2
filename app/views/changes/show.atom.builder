@@ -1,3 +1,4 @@
+cache "changes-show-atom" do
 atom_feed do |feed|
   feed.title("pdxruby.org detailed changes")
   feed.updated((@proposals.blank? ? Time.at(0) : @proposals.first.created_at))
@@ -7,7 +8,7 @@ atom_feed do |feed|
       changes = changes_for(version)
       user = Member.find(version.whodunnit) rescue nil
 
-      entry.title "#{version.item_type}##{version.item_id} #{version.event} #{user ? 'by '+user.name : ''}"
+      entry.title "#{version.event.titleize} #{version.item_type}##{version.item_id} #{user ? 'by '+user.name : ''}"
       entry.updated version.created_at.utc.xmlschema
 
       xm = ::Builder::XmlMarkup.new
@@ -27,4 +28,5 @@ atom_feed do |feed|
       entry.content(xm.to_s, :type => 'html')
     end
   end
+end
 end

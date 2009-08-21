@@ -1,3 +1,4 @@
+cache "events-index-atom" do
 atom_feed do |feed|
   feed.title("Portland Ruby Brigade events")
   feed.updated((@events.blank? ? Time.at(0) : @events.first.updated_at))
@@ -28,4 +29,5 @@ atom_feed do |feed|
       entry.content(xm.to_s, :type => 'html')
     end
   end
+end
 end

@@ -1,3 +1,4 @@
+<% cache "home-index" do %>
 <h2>Who are we?</h2>
 
 <p>The Portland Ruby Brigade is a user group for Ruby programmers in the Portland, Oregon area.
@@ -30,3 +31,4 @@
   <%= render :partial => 'event', :collection => @events %>
   <li><p><%= link_to "More...", events_path %></p></li>
 </ul>
+<% end %>
