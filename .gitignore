@@ -6,6 +6,7 @@
 /*.sql
 /*.tmp
 /tmp/cache/
+config/database~custom.yml
 config/settings.yml
 coverage/
 db/*.sqlite3
