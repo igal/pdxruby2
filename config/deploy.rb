@@ -32,6 +32,15 @@
 #
 #  8. If you deployed a broken revision, you can rollback to the previous, e.g.,:
 #       cap mysite deploy:rollback
+#
+# == Variable names
+#
+# :current_path => 'current' symlink pointing at current release
+# :release_path => 'release' directory being deployed
+# :shared_path  => 'shared' directory with shared content
+
+#---[ Settings ]--------------------------------------------------------
+
 ssh_options[:compression] = false
 
 set :application, "pdxruby2"
@@ -42,9 +51,12 @@ set :stages, Dir["config/deploy/*.rb"].map{|t| File.basename(t, ".rb")}
 require 'capistrano/ext/multistage'
 set :default_stage, "pragmaticraft"
 
-# :current_path - 'current' symlink pointing at current release
-# :release_path - 'release' directory being deployed
-# :shared_path - 'shared' directory with shared content
+#---[ Tasks ]-----------------------------------------------------------
+
+def sh(cmd)
+  puts cmd
+  system cmd
+end
 
 namespace :deploy do
   desc "Restart Passenger application"
@@ -117,19 +129,52 @@ ERROR!  You must have a file on your server with the database configuration.
   end
 end
 
-desc "Upload member images"
-task :upload_member_images do
-  source = "#{File.expand_path(File.dirname(File.dirname(__FILE__)))}/public/images/members/"
-  target = "#{shared_path}/system/member_images/"
-  system "(cd #{source} && rsync -uvax . #{user}@#{host}:#{target})"
+namespace :images do
+  desc "Upload member images"
+  task :upload do
+    source = "#{File.expand_path(File.dirname(File.dirname(__FILE__)))}/public/images/members/"
+    target = "#{shared_path}/system/member_images/"
+    sh "(cd #{source} && rsync -uvax . #{user}@#{host}:#{target})"
+  end
+
+  desc "Download member images"
+  task :download do
+    target = "#{File.expand_path(File.dirname(File.dirname(__FILE__)))}/public/images/members/"
+    source = "#{shared_path}/system/member_images/"
+    sh "(cd #{target} && rsync -uvax #{user}@#{host}:#{source} .)"
+  end
 end
 
-desc "Download member images"
-task :download_member_images do
-  target = "#{File.expand_path(File.dirname(File.dirname(__FILE__)))}/public/images/members/"
-  source = "#{shared_path}/system/member_images/"
-  system "(cd #{target} && rsync -uvax #{user}@#{host}:#{source} .)"
+namespace :db do
+  namespace :remote do
+    desc "Dump database on remote server"
+    task :dump do
+      run "(cd #{current_path} && rake RAILS_ENV=production db:raw:dump FILE=#{shared_path}/db/database.sql)"
+    end
+  end
+
+  namespace :local do
+    desc "Restore downloaded database on local server"
+    task :restore do
+      sh "rake db:raw:dump FILE=database~old.sql"
+      sh "rake db:raw:restore FILE=database.sql"
+    end
+  end
+
+  desc "Download database from remote server"
+  task :get do
+    sh "rsync -uvax #{user}@#{host}:#{shared_path}/db/database.sql ."
+  end
+
+  desc "Fetch: dump, download and load remote database into local instance"
+  task :fetch do
+    db.remote.dump
+    db.get
+    db.local.restore
+  end
 end
+
+#---[ Triggers ]--------------------------------------------------------
 
 # After setup
 after "deploy:setup", "deploy:prepare_shared"
@@ -141,3 +186,5 @@ before "deploy:finalize_update", "deploy:link_member_images"
 
 # After symlink
 after "deploy:symlink", "deploy:clear_cache"
+
+#===[ fin ]=============================================================
