@@ -9,7 +9,7 @@
     <%= stylesheet_link_tag 'scaffold' %>
     <%= stylesheet_link_tag 'stylesheet' %>
     <%= javascript_include_tag 'prototype' %>
-    <%= auto_discovery_link_tag(:atom, formatted_events_path(:atom), :title => "Portland Ruby Brigade events") %>
+    <%= auto_discovery_link_tag(:atom, events_path(:format => :atom), :title => "Portland Ruby Brigade events") %>
 
     <title>The Portland Ruby Brigade (PDX.rb)</title>
   </head>
