@@ -28,5 +28,5 @@
 </p>
 <ul>
   <%= render :partial => 'event', :collection => @events %>
-  <li><p><a href="/events/list">More...</a></p></li>
+  <li><p><%= link_to "More...", events_path %></p></li>
 </ul>
