@@ -1,21 +1,20 @@
 ActionController::Routing::Routes.draw do |map|
   #===[ Routes ]==========================================================
-  # The "/*/show/:id" and "/*/list" routes are for backwards compatibility
   
   # Backwards compatible with old site
   map.connect '/pdx.rb.ics',  :controller => 'events', :action => 'index', :format => 'ics'
   map.connect '/events/ical', :controller => 'events', :action => 'index', :format => 'ics'
 
-  map.connect '/members/show/:id', :controller => 'members', :action => 'show'
-  map.connect '/members/list',     :controller => 'members', :action => 'index'
+  map.redirect '/members/show/:id', :controller => 'members', :action => 'show', :permanent => true
+  map.redirect '/members/list',     :controller => 'members', :action => 'index', :permanent => true
   map.resources :members
 
-  map.connect '/locations/show/:id', :controller => 'locations', :action => 'show'
-  map.connect '/locations/list',     :controller => 'locations', :action => 'index'
+  map.redirect '/locations/show/:id', :controller => 'locations', :action => 'show', :permanent => true
+  map.redirect '/locations/list',     :controller => 'locations', :action => 'index', :permanent => true
   map.resources :locations
 
-  map.connect '/events/show/:id', :controller => 'events', :action => 'show'
-  map.connect '/events/list',     :controller => 'events', :action => 'index'
+  map.redirect '/events/show/:id', :controller => 'events', :action => 'show', :permanent => true
+  map.redirect '/events/list',     :controller => 'events', :action => 'index', :permanent => true
   map.resources :events, :collection => {:add_location => :post}
 
   map.root :controller => "home"
