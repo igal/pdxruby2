@@ -25,6 +25,8 @@ ActionController::Routing::Routes.draw do |map|
   map.logout '/logout', :controller => 'member_sessions', :action => 'logout'
   # TODO add password reset
 
+  map.connect 'omfg',  :controller => 'home', :action => 'omfg'
+
   #===[ Documentation ]===================================================
 
   # The priority is based upon order of creation: first created -> highest priority.
