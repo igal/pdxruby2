@@ -5,9 +5,10 @@
 /*.diff
 /*.sql
 /*.tmp
+/tmp/cache/
 config/settings.yml
 coverage/
-db/schema.rb
 db/*.sqlite3
+db/schema.rb
 public/images/members/
 tags
