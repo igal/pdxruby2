@@ -21,8 +21,8 @@ class Event < ActiveRecord::Base
   belongs_to :member
   belongs_to :location
 
-  default_scope :order => 'ends_at desc'
-  named_scope :recent, :order => 'ends_at desc', :limit => 5
+  default_scope :order => 'ends_at desc', :include => [:location, :member]
+  named_scope :recent, :order => 'ends_at desc', :limit => 5, :include => [:location, :member]
 
   validates_presence_of :name
   validates_presence_of :starts_at
