@@ -56,6 +56,7 @@ production:
   database: pdxruby2_production
   pool: 5
 
+# Old database containing original pdxruby application's data, used by "script/import_from_old.rb".
 old:
   adapter: postgresql
   encoding: unicode
