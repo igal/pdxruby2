@@ -13,7 +13,7 @@ Rails::Initializer.run do |config|
 
   # Add additional load paths for your own custom dirs
   # config.load_paths += %W( #{RAILS_ROOT}/extras )
-  config.load_paths += %W[ #{RAILS_ROOT} ]
+  config.load_paths += ["#{RAILS_ROOT}", "#{RAILS_ROOT}/app/observers"]
 
   # Specify gems that this application depends on and have them installed with rake gems:install
   # config.gem "bj"
@@ -40,6 +40,7 @@ Rails::Initializer.run do |config|
 
   # Activate observers that should always be running
   # config.active_record.observers = :cacher, :garbage_collector, :forum_observer
+  config.active_record.observers = :cacher
 
   # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
   # Run "rake -D time" for a list of tasks for finding time zone names.
@@ -49,4 +50,9 @@ Rails::Initializer.run do |config|
   # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
   # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}')]
   # config.i18n.default_locale = :de
+
+  # Configure caching: http://guides.rubyonrails.org/caching_with_rails.html
+  cache_dir = "#{RAILS_ROOT}/tmp/cache/#{RAILS_ENV}"
+  FileUtils.mkdir_p(cache_dir)
+  config.cache_store = :file_store, cache_dir
 end
