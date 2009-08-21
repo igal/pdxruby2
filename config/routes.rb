@@ -17,9 +17,9 @@ ActionController::Routing::Routes.draw do |map|
   map.redirect '/events/list',     :controller => 'events', :action => 'index', :permanent => true
   map.resources :events, :collection => {:add_location => :post}
 
+  map.resource :changes
+
   map.root :controller => "home"
-  map.changes '/changes', :controller => 'home', :action => 'changes'
-  map.changes_formatted '/changes.:format', :controller => 'home', :action => 'changes'
 
   map.login  '/login',  :controller => 'member_sessions', :action => 'login'
   map.logout '/logout', :controller => 'member_sessions', :action => 'logout'
