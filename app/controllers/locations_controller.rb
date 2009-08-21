@@ -6,7 +6,7 @@ class LocationsController < ApplicationController
   # GET /locations
   # GET /locations.xml
   def index
-    @locations = Location.all
+    @locations = Defer { ::Location.all }
 
     respond_to do |format|
       format.html # index.html.erb

@@ -7,25 +7,13 @@ class EventsController < ApplicationController
   # GET /events
   # GET /events.xml
   def index
-    events_callback = lambda { Event.paginate(:page => params[:page], :order => 'ends_at desc') }
+    @events = Defer { ::Event.paginate(:page => params[:page], :order => 'ends_at desc') }
 
     respond_to do |format|
-      format.ics {
-        @events = Event.recent
-        render :text => Event.to_icalendar(@events)
-      }
-      format.atom {
-        # index.atom.builder
-        @events = events_callback.call
-      }
-      format.html {
-        # index.html.erb
-        @events = events_callback.call
-      }
-      format.xml  {
-        @events = events_callback.call
-        render :xml => @events
-      }
+      format.ics  { render :text => Event.to_icalendar(@events) }
+      format.atom # index.atom.builder
+      format.html # index.html.erb
+      format.xml  { render :xml => @events }
     end
   end
 

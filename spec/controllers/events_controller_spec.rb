@@ -26,9 +26,9 @@ describe EventsController do
 
   describe "GET index" do
     it "assigns all events as @events" do
-      Event.stub!(:find).with(:all).and_return([mock_event])
+      Event.stub!(:paginate).and_return([mock_event].paginate)
       get :index
-      assigns[:events].should == [mock_event]
+      assigns[:events].__materialize.should == [mock_event].paginate
     end
   end
 

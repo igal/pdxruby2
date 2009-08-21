@@ -1,6 +1,6 @@
 class HomeController < ApplicationController
   def index
-    @events = Event.recent
+    @events = Defer { ::Event.recent }
   end
 
   # Raise exception, mostly for confirming that exception_notification works.
