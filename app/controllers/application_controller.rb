@@ -20,7 +20,7 @@ class ApplicationController < ActionController::Base
 protected
 
   def logged_in?
-    return current_user
+    return !! current_user
   end
   helper_method :logged_in?
 
