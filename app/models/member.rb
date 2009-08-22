@@ -18,7 +18,7 @@
 class Member < ActiveRecord::Base
   attr_accessible :name, :email, :feed_url, :irc_nick, :about
 
-  default_scope :order => 'name asc'
+  default_scope :order => 'lower(name) asc'
 
   validates_uniqueness_of :email
   validates_length_of :name, :minimum => 3
