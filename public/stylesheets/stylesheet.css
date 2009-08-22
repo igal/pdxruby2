@@ -172,15 +172,15 @@ table#eventlist tr.cancelled_event {
 }
 
 
-.changes_details_table .changes_detail_key {
+.changes_details_table td.change_detail_key {
   width; 10%;
 }
 
-.changes_details_table .changes_detail_value {
+.changes_details_table td.change_detail_value {
   width: 40%;
 }
 
-.changes_details_table .change_detail_spacer {
+.changes_details_table td.change_detail_spacer {
   width: 10%;
   text-align: center;
   vertical-align: middle;
