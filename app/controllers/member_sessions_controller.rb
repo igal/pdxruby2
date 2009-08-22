@@ -6,7 +6,7 @@ class MemberSessionsController < ApplicationController
      @member_session = MemberSession.new(params[:member_session])
      if @member_session.save
        flash[:notice] = "Login successful!"
-       return redirect_back_or_default root_path
+       return redirect_back_or_default(root_path)
      else
        if params[:member_session]
          flash[:notice] = "Wrong username or password!"
@@ -21,6 +21,6 @@ class MemberSessionsController < ApplicationController
      else
        flash[:notice] = "You are not logged in!"
      end
-     redirect_to root_path
+     redirect_to(root_path)
   end
 end
