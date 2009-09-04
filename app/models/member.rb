@@ -38,7 +38,7 @@ class Member < ActiveRecord::Base
   end
 
   def password=(string)
-    write_attribute(:password, self.class.hashed_password(string))
+    self.write_attribute(:password, self.class.hashed_password(string))
   end
 
   def can_alter?(user)
