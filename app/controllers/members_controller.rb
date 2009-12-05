@@ -42,6 +42,10 @@ class MembersController < ApplicationController
   # POST /members
   # POST /members.xml
   def create
+    if params[:dont_fill_this_in]
+      return redirect_to(new_member_path) 
+    end
+
     @member = Member.new(params[:member])
 
     if logged_in? && current_user.admin?
