@@ -66,7 +66,7 @@ describe MembersController do
     describe "with valid params" do
       it "assigns a newly created member as @member" do
         Member.stub!(:new).with({'these' => 'params'}).and_return(mock_member(:save => true, :password= => true))
-        post :create, :member => {:these => 'params'}
+        post :create, :dont_fill_this_in => '', :member => {:these => 'params'}
         assigns[:member].should equal(mock_member)
       end
 
