@@ -4,6 +4,8 @@
 require 'etc'
 require 'socket'
 
-ExceptionNotifier.sender_address = "#{Etc.getlogin}@#{Socket.gethostname}"
-
-ExceptionNotifier.exception_recipients = [SETTINGS.exception_notification_address]
+ExceptionNotifier.configure_exception_notifier do |c|
+  c[:exception_recipients] = [SETTINGS.exception_notification_address]
+  c[:sender_address] = "#{Etc.getlogin}@#{Socket.gethostname}"
+  c[:skip_local_notification]  = false
+end
