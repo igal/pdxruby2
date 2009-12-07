@@ -57,6 +57,8 @@
     <%= f.text_area :about %>
   </p>
 
+  <%= text_field_tag :dont_fill_this_in, '', :class => 'dont_fill_this_in' %>
+
   <%= f.submit(@member.new_record? ? 'Create' : 'Update') %>
 <% end %>
 

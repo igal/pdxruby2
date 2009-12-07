@@ -91,6 +91,24 @@ describe MembersController do
       end
     end
 
+    describe "when trying to foil insidious spam bots" do
+      before(:each) do
+        post :create, :dont_fill_this_in => "some bot text"
+      end
+
+      it "should not create a user when dont_fill_this_in has a value" do
+        assigns[:member].should be_nil
+      end
+
+      it "should redirect to new when dont_fill_this_in has a value" do
+        response.should redirect_to(new_member_path)
+      end
+
+      it "should set notice for human about this situation" do
+        flash[:notice].should_not be_nil
+      end
+    end
+
   end
 
   describe "PUT update" do
