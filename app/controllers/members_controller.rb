@@ -42,7 +42,7 @@ class MembersController < ApplicationController
   # POST /members
   # POST /members.xml
   def create
-    if params[:dont_fill_this_in]
+    unless params[:dont_fill_this_in].blank?
       flash[:notice] = "You filled in a field that you shouldn't have, therefore I think you're a robot."
       flash.keep
       return redirect_to(new_member_path) 

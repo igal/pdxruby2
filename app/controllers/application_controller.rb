@@ -15,6 +15,8 @@ class ApplicationController < ActionController::Base
   if ["production", "preview"].include?(RAILS_ENV)
     include ExceptionNotifiable
     local_addresses.clear
+    self.exception_notifiable_silent_exceptions ||= []
+    self.exception_notifiable_silent_exceptions << ActionController::InvalidAuthenticityToken if ActionController.const_defined?(:InvalidAuthenticityToken)
   end
 
 protected
