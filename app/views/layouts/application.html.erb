@@ -53,8 +53,16 @@
     </div>
 
     <div id="content">
-      <% if flash[:notice] %>
-        <p class="flash"><%= flash[:notice] %></p>
+      <%# Uncommment the line below to test styling of flash %>
+      <%### flash[:error] = "OMG!"; flash[:notice] = "Hello!"; %>
+      <% unless flash.blank? %>
+        <div id="flash">
+          <% flash.each_pair do |kind, message| %>
+          <p class="flash_<%= kind %>">
+            <%= message %>
+          </p>
+          <% end %>
+        </div>
       <% end %>
 
       <%= yield %>
