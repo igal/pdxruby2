@@ -28,7 +28,7 @@ module AuthenticatedTestHelper
     if request
       request.session[:member] = nil
       request.env["HTTP_AUTHORIZATION"] = nil
-      current_user_session.destroy
+      current_user_session.destroy if defined?(current_user_session)
     end
   end
 end
