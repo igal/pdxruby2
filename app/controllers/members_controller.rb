@@ -6,7 +6,7 @@ class MembersController < ApplicationController
   # GET /members
   # GET /members.xml
   def index
-    @members = Defer { ::Member.all }
+    @members = Defer { ::Member.nonspammers.sorted }
 
     respond_to do |format|
       format.html # index.html.erb
