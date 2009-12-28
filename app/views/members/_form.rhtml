@@ -29,6 +29,7 @@
 
   <p>
     <%= f.label :email %>
+    (only shown to other members)
     <br/>
     <%= f.text_field :email %>
   </p>
@@ -52,7 +53,8 @@
   </p>
 
   <p>
-    <%= f.label :about %>
+    <%= f.label :about, "Describe yourself" %>
+    <%= display_textile_help_link '(instructions for fancy formatting)' %>
     <br/>
     <%= f.text_area :about %>
   </p>
