@@ -17,7 +17,8 @@ module AuthenticatedTestHelper
         raise TypeError, "Can't login as type: #{member.class}"
       end
     request.session[:member] = identity
-    controller.instance_variable_set("@current_user_session", OpenStruct.new(:record => Member.find(identity)))
+    # Views have an @controller, controllers have a #controller.
+    (@controller || controller).instance_variable_set("@current_user_session", OpenStruct.new(:record => Member.find(identity)))
   end
 
   def authorize_as(member)
