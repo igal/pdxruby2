@@ -28,13 +28,13 @@
 
    <% unless @member.feed_url.blank? %>
      <p>
-       <b>Feed URL:</b> <%= link_to h(@member.feed_url), @member.feed_url %>
+       <b>Feed URL:</b> <%= display_link_to @member.feed_url %>
      </p>
    <% end %>
 
-    <% if logged_in? and not @member.email.blank? %>
+    <% if logged_in_and_nonspammer? and not @member.email.blank? %>
       <p>
-        <b>Email:</b> <%= link_to h(@member.email), "mailto:#{@member.email}" %>
+        <b>Email:</b> <%= display_mail_to @member.email %>
       </p>
     <% end %>
 
@@ -48,7 +48,7 @@
      <p>
        <b>About:</b>
        <br/>
-       <%= textilize @member.about %>
+       <%= display_textile_for @member.about %>
      </p>
    <% end %>
 </blockquote>
