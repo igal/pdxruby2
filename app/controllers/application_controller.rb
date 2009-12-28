@@ -76,6 +76,12 @@ protected
   end
   helper_method :current_user_spammer?
 
+  # Is the current user logged-in AND a non-spammer?
+  def logged_in_and_nonspammer?
+    return(current_user ? ! current_user.spammer? : false)
+  end
+  helper_method :logged_in_and_nonspammer?
+
   #===[ Filters ]=========================================================
 
   # Redirect spammers back to root with a warning.

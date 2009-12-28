@@ -65,4 +65,21 @@ describe HomeController, "helpers" do
       controller.send(:current_user_spammer?).should be_false
     end
   end
+
+  describe "logged_in_and_nonspammer?" do
+    it "should not give access to spammer" do
+      login_as :spammy
+      controller.send(:logged_in_and_nonspammer?).should be_false
+    end
+
+    it "should give access to logged-in non-spammer" do
+      login_as :bubba
+      controller.send(:logged_in_and_nonspammer?).should be_true
+    end
+
+    it "should not give access to anonymous" do
+      logout
+      controller.send(:logged_in_and_nonspammer?).should be_false
+    end
+  end
 end
