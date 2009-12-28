@@ -16,7 +16,7 @@ describe LocationsController do
     it "assigns all locations as @locations" do
       Location.stub!(:find).with(:all).and_return([mock_location])
       get :index
-      assigns[:locations].__materialize.should == [mock_location]
+      assigns[:locations].should == [mock_location]
     end
   end
 
