@@ -67,4 +67,25 @@ protected
     redirect_to(session[:return_to] || default)
     session[:return_to] = nil
   end
+
+  #===[ Helpers ]=========================================================
+
+  # Is the current user both logged in and a spammer?
+  def current_user_spammer?
+    return(current_user ? current_user.spammer? : false)
+  end
+  helper_method :current_user_spammer?
+
+  #===[ Filters ]=========================================================
+
+  # Redirect spammers back to root with a warning.
+  def reject_spammer
+    if current_user_spammer?
+      flash[:error] = "Access denied because I think you're a spammer. If you're not, go edit your profile and turn off the spammer flag."
+      flash.keep
+      return redirect_to(root_path)
+    else
+      return false
+    end
+  end
 end

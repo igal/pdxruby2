@@ -26,6 +26,7 @@ ActionController::Routing::Routes.draw do |map|
   # TODO add password reset
 
   map.connect 'omfg',  :controller => 'home', :action => 'omfg'
+  map.connect 'spammers_forbidden', :controller => 'home', :action => 'spammers_forbidden'
 
   #===[ Documentation ]===================================================
 
