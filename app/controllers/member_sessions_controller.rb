@@ -14,7 +14,9 @@ class MemberSessionsController < ApplicationController
       return redirect_back_or_default(root_path)
     else
       if params[:member_session]
-        flash[:notice] = "Wrong username or password!"
+        flash[:error] = "Wrong username or password!"
+      elsif params[:login_as]
+        flash[:error] = "Insufficient privileges to login as another user"
       end
     end
   end
