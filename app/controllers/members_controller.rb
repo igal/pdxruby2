@@ -2,11 +2,12 @@ class MembersController < ApplicationController
   before_filter :require_user, :only => [:edit, :update, :destroy]
   before_filter :assign_user_or_redirect, :only => [:show, :edit, :update, :destroy]
   before_filter :require_authorization, :only => [:edit, :update, :destroy]
+  before_filter :reject_spammer, :only => [:index, :new, :create, :destroy]
 
   # GET /members
   # GET /members.xml
   def index
-    @members = Defer { ::Member.all }
+    @members = Defer { ::Member.nonspammers.sorted }
 
     respond_to do |format|
       format.html # index.html.erb
@@ -80,6 +81,8 @@ class MembersController < ApplicationController
     if current_user.admin?
       @member.admin = params[:member][:admin]
     end
+
+    @member.spammer = params[:member][:spammer] if params[:member]
 
     unless params[:member_password].blank?
       if params[:member_password] == params[:member_verify_password]

@@ -21,7 +21,7 @@ describe MembersController do
     it "assigns all members as @members" do
       Member.stub!(:find).with(:all).and_return([mock_member])
       get :index
-      assigns[:members].__materialize.should == [mock_member]
+      assigns[:members].should == [mock_member]
     end
   end
 

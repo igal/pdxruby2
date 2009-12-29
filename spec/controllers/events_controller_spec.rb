@@ -28,7 +28,7 @@ describe EventsController do
     it "assigns all events as @events" do
       Event.stub!(:paginate).and_return([mock_event].paginate)
       get :index
-      assigns[:events].__materialize.should == [mock_event].paginate
+      assigns[:events].should == [mock_event].paginate
     end
   end
 

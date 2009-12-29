@@ -18,7 +18,9 @@
 class Member < ActiveRecord::Base
   attr_accessible :name, :email, :feed_url, :irc_nick, :about
 
-  default_scope :order => 'lower(name) asc'
+  named_scope :sorted, :order => 'lower(name) asc'
+  named_scope :spammers, :conditions => {:spammer => true}
+  named_scope :nonspammers, :conditions => {:spammer => false}
 
   validates_uniqueness_of :email
   validates_length_of :name, :minimum => 3

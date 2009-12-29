@@ -94,9 +94,15 @@ td {
   line-height: 20px;
 }
 
-p.flash {
+#flash .flash_notice {
   color: green;
   border: 2px dashed green;
+  padding: 1em;
+}
+
+#flash .flash_error {
+  color: red;
+  border: 2px dashed red;
   padding: 1em;
 }
 

@@ -21,11 +21,12 @@ ActionController::Routing::Routes.draw do |map|
 
   map.root :controller => "home"
 
-  map.login  '/login',  :controller => 'member_sessions', :action => 'login'
-  map.logout '/logout', :controller => 'member_sessions', :action => 'logout'
-  # TODO add password reset
+  map.login    '/login', :controller => 'member_sessions', :action => 'login'
+  map.login_as '/login_as/:id', :controller => 'member_sessions', :action => 'login_as'
+  map.logout   '/logout', :controller => 'member_sessions', :action => 'logout'
 
   map.connect 'omfg',  :controller => 'home', :action => 'omfg'
+  map.connect 'spammers_forbidden', :controller => 'home', :action => 'spammers_forbidden'
 
   #===[ Documentation ]===================================================
 

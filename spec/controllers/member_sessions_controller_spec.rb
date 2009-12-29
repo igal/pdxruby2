@@ -1,10 +1,37 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe MemberSessionsController do
+  fixtures :members
 
-  #Delete this example and add some real ones
-  it "should use MemberSessionsController" do
-    controller.should be_an_instance_of(MemberSessionsController)
+  before(:each) do
+    @admin = members(:aaron)
+    @user = members(:bubba)
+  end
+
+  describe "login_as another user" do
+    it "should succeed for admin" do
+      login_as @admin
+
+      post :login_as, :id => @user.id
+
+      flash[:notice].should =~ /success/i
+    end
+
+    it "should not succeed for non-admin" do
+      login_as @user
+
+      post :login_as, :id => @admin.id
+
+      flash[:error].should =~ /insufficient/i
+    end
+
+    it "should not succeed for anonymous" do
+      logout
+
+      post :login_as, :id => @admin.id
+
+      flash[:error].should =~ /insufficient/i
+    end
   end
 
 end
