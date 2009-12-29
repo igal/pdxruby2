@@ -2,6 +2,7 @@ class MembersController < ApplicationController
   before_filter :require_user, :only => [:edit, :update, :destroy]
   before_filter :assign_user_or_redirect, :only => [:show, :edit, :update, :destroy]
   before_filter :require_authorization, :only => [:edit, :update, :destroy]
+  before_filter :reject_spammer, :only => [:index, :new, :create, :destroy]
 
   # GET /members
   # GET /members.xml
