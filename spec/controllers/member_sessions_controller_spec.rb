@@ -12,7 +12,7 @@ describe MemberSessionsController do
     it "should succeed for admin" do
       login_as @admin
 
-      post :login, :login_as => @user.id
+      post :login_as, :id => @user.id
 
       flash[:notice].should =~ /success/i
     end
@@ -20,7 +20,7 @@ describe MemberSessionsController do
     it "should not succeed for non-admin" do
       login_as @user
 
-      post :login, :login_as => @admin.id
+      post :login_as, :id => @admin.id
 
       flash[:error].should =~ /insufficient/i
     end
@@ -28,7 +28,7 @@ describe MemberSessionsController do
     it "should not succeed for anonymous" do
       logout
 
-      post :login, :login_as => @admin.id
+      post :login_as, :id => @admin.id
 
       flash[:error].should =~ /insufficient/i
     end
