@@ -9,6 +9,7 @@
   <tr>
    <th></th>
    <th>Name</th>
+   <th>Website</th>
    <% if logged_in_and_nonspammer? %>
     <th>Email</th>
    <% end %>
@@ -18,8 +19,9 @@
   <tr class="<%= cycle :odd, :even %>">
     <td><%= link_to(image_tag(member.picture.url(:tiny), :border => 0), member_path(member)) if member.picture.file? %></td>
     <td><%= link_to(h(member.name), member_path(member)) %></td>
+    <td><%= display_link_to(member.website, :title => "Website", :nofollow => true) if member.website.present? %></td>
     <% if logged_in_and_nonspammer? %>
-      <td><%= display_mail_to(member.email) if member.email %></td>
+      <td><%= display_mail_to(member.email, :title => "Email", :nofollow => true) if member.email.present? %></td>
     <% end %>
   </tr>
 <% end %>

@@ -31,9 +31,15 @@
      <b>Name:</b> <%= h @member.name %>
    </p>
 
+   <% unless @member.website.blank? %>
+     <p>
+       <b>Website:</b> <%= display_link_to @member.website, :nofollow => true %>
+     </p>
+   <% end %>
+
    <% unless @member.feed_url.blank? %>
      <p>
-       <b>Feed URL:</b> <%= display_link_to @member.feed_url %>
+       <b>Feed URL:</b> <%= display_link_to @member.feed_url, :nofollow => true %>
      </p>
    <% end %>
 
