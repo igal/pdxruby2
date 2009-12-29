@@ -1,18 +1,25 @@
 # == Schema Information
-# Schema version: 20090819180345
+# Schema version: 20091229031418
 #
 # Table name: members
 #
-#  id                :integer         not null, primary key
-#  name              :string(128)
-#  email             :string(512)
-#  password          :string(256)
-#  feed_url          :string(512)
-#  irc_nick          :string(128)
-#  persistence_token :string(1024)
-#  about             :string(16384)
-#  created_at        :datetime
-#  updated_at        :datetime
+#  id                   :integer         not null, primary key
+#  name                 :string(128)
+#  email                :string(512)
+#  password             :string(256)
+#  feed_url             :string(512)
+#  irc_nick             :string(128)
+#  persistence_token    :string(1024)
+#  about                :string(16384)
+#  created_at           :datetime
+#  updated_at           :datetime
+#  admin                :boolean
+#  spammer              :boolean
+#  picture_file_name    :string(255)
+#  picture_content_type :string(255)
+#  picture_file_size    :integer
+#  picture_updated_at   :datetime
+#  website              :string(1024)
 #
 
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
