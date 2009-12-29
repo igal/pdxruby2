@@ -35,6 +35,14 @@ td {
   display: none;
 }
 
+.odd {
+  background: #F2EEEE;
+}
+
+.even {
+  background: #FAF6F6;
+}
+
 /*
  * banner
  */
@@ -129,9 +137,12 @@ td {
 
 /* /members/list */
 table#memberlist{
+  border-collapse: collapse;
 }
 table#memberlist td{
-  padding: 3px;
+  height: 40px;
+  padding: 5px 10px;
+  vertical-align: middle;
 }
 /* /events/list */
 table#eventlist{

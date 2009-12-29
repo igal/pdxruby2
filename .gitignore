@@ -12,4 +12,5 @@ coverage/
 db/*.sqlite3
 db/schema.rb
 public/images/members/
+public/system/
 tags

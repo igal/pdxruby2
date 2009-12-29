@@ -7,15 +7,17 @@
 
 <table id="memberlist">
   <tr>
-   <th>Name</td>
+   <th></th>
+   <th>Name</th>
    <% if logged_in_and_nonspammer? %>
-    <th>Email</td>
+    <th>Email</th>
    <% end %>
   </tr>
 
 <% for member in @members %>
-  <tr>
-    <td><%= link_to h(member.name), member_path(member) %></td>
+  <tr class="<%= cycle :odd, :even %>">
+    <td><%= link_to(image_tag(member.picture.url(:tiny), :border => 0), member_path(member)) if member.picture.file? %></td>
+    <td><%= link_to(h(member.name), member_path(member)) %></td>
     <% if logged_in_and_nonspammer? %>
       <td><%= display_mail_to(member.email) if member.email %></td>
     <% end %>
