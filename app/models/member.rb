@@ -16,7 +16,7 @@
 #
 
 class Member < ActiveRecord::Base
-  attr_accessible :name, :email, :feed_url, :irc_nick, :about, :spammer
+  attr_accessible :name, :email, :feed_url, :irc_nick, :about, :spammer, :picture
 
   named_scope :sorted, :order => 'lower(name) asc'
   named_scope :spammers, :conditions => {:spammer => true}
@@ -30,6 +30,9 @@ class Member < ActiveRecord::Base
   acts_as_authentic do |c|
     c.email_field = :email
   end
+
+  # PaperClip plugin
+  has_attached_file :picture, :styles => { :medium => "300x300>", :thumb => "100x100>", :tiny => "32x32>" }
 
   def valid_password?(string)
     return self.class.hashed_password(string) == self.password

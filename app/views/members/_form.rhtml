@@ -1,4 +1,4 @@
-<% form_for @member do |f| %>
+<% form_for(@member, :html => {:multipart => true}) do |f| %>
   <%= f.error_messages %>
 
   <% if logged_in? && current_user.admin? %>
@@ -55,9 +55,10 @@
   </p>
 
   <p>
-    <%= f.label :icon %>
+    <%= f.label :picture %>
     <br/>
-    <%= file_field_tag :member_image_file %>
+    <%= image_tag @member.picture.url(:thumb) if @member.picture.file? %>
+    <%= f.file_field :picture %>
   </p>
 
   <p>

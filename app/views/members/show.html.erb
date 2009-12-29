@@ -10,9 +10,9 @@
     </div>
   <% end %>
   <p>
-    <% if !File.exist?("#{RAILS_ROOT}/public/images/members/#{@member.id.to_s}.jpg") %>
-      <%#= image_tag '/images/members/default.jpg' %>
-    <% else %>
+    <% if @member.picture.file? %>
+      <%= image_tag @member.picture.url(:medium) %>
+    <% elsif File.exist?("#{RAILS_ROOT}/public/images/members/#{@member.id.to_s}.jpg") %>
       <%= image_tag "/images/members/#{@member.id.to_s}.jpg" %>
     <% end %>
    </p>
