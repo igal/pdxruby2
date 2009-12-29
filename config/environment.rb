@@ -29,6 +29,8 @@ Rails::Initializer.run do |config|
   config.gem 'mislav-will_paginate', :lib => 'will_paginate', :source => 'http://gems.github.com'
   config.gem 'authlogic'
   config.gem 'authlogic-oid', :lib => false
+  config.gem 'right_aws', :lib => false # we aren't actually using AWS, but paperclip can, so it requires it.
+  config.gem 'thoughtbot-paperclip', :source => 'http://gems.github.com', :lib => 'paperclip'
 
   # Only load the plugins named here, in the order given (default is alphabetical).
   # :all can be used as a placeholder for all plugins not explicitly named
