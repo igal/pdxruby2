@@ -81,6 +81,8 @@ class MembersController < ApplicationController
       @member.admin = params[:member][:admin]
     end
 
+    @member.spammer = params[:member][:spammer] if params[:member]
+
     unless params[:member_password].blank?
       if params[:member_password] == params[:member_verify_password]
         @member.password = params[:member_password]

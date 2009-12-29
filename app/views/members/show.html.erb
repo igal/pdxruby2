@@ -17,9 +17,15 @@
    </p>
 
    <% if @member.admin? %>
-   <p style="color: red">
-     <b>Administrator</b>
-   </p>
+     <p style="color: green">
+       <b>Administrator</b>
+     </p>
+   <% end %>
+
+   <% if @member.spammer? %>
+     <p style="color: red">
+       <b>Spammer</b>
+     </p>
    <% end %>
 
    <p>
