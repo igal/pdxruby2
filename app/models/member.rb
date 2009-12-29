@@ -16,7 +16,7 @@
 #
 
 class Member < ActiveRecord::Base
-  attr_accessible :name, :email, :feed_url, :irc_nick, :about
+  attr_accessible :name, :email, :feed_url, :irc_nick, :about, :spammer
 
   named_scope :sorted, :order => 'lower(name) asc'
   named_scope :spammers, :conditions => {:spammer => true}
