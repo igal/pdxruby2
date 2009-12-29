@@ -23,7 +23,7 @@ describe Member do
       :name => "value for name",
       :email => "email@host.com",
       :password => "value for password",
-      :feed_url => "value for feed_url",
+      :feed_url => "http://feed.url/",
       :about => "value for about",
       :created_at => Time.now
     }
