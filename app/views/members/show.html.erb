@@ -4,6 +4,7 @@
     <div style="float:right">
       <%= link_to 'Edit', edit_member_path(@member) %>
       <% if current_user.admin? %>
+      | <%= link_to 'Login as', login_path(:login_as => @member), :method => :post %>
         | <%= link_to 'Destroy', member_path(@member), :method => :delete, :confirm => "Destroy this user?" %>
       <% end %>
     </div>
