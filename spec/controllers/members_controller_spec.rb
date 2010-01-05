@@ -25,6 +25,23 @@ describe MembersController do
     end
   end
 
+  describe "GET index.atom" do
+    integrate_views
+
+    it "should list members" do
+      members = [@aaron, @clio]
+      Member.stub!(:latest).and_return(members)
+
+      get(:index, :format => "atom")
+
+      for member in members
+        response.should have_text(/#{member.name}/)
+        response.should have_text(/#{member.feed_url}/)
+        response.should_not have_text(/#{member.email}/)
+      end
+    end
+  end
+
   describe "GET show" do
     it "assigns the requested member as @member" do
       Member.stub!(:find).with("37").and_return(mock_member)

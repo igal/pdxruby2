@@ -11,6 +11,7 @@ class MembersController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
+      format.atom { @members = ::Member.latest } # index.atom.erb
       format.xml  { render :xml => @members }
     end
   end

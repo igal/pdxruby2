@@ -30,6 +30,7 @@ class Member < ActiveRecord::Base
   named_scope :sorted, :order => 'lower(name) asc'
   named_scope :spammers, :conditions => {:spammer => true}
   named_scope :nonspammers, :conditions => {:spammer => false}
+  named_scope :latest, :order => 'created_at desc', :limit => 20
 
   # Validations:
   validates_uniqueness_of :email
