@@ -1,40 +1,40 @@
 <% cache "events-index,page_#{params[:page] || 0}" do %>
-<h1>Listing events</h1>
+  <h1>Listing events</h1>
 
-<% if logged_in_and_nonspammer? %>
-  <p>
-    <%= link_to 'New event', :action => 'new' %>
-  </p>
-<% end %>
+  <table id="eventlist">
+    <tr>
+      <th>Name</th>
+      <th>Location</th>
+      <th>Starts At</th>
+    </tr>
 
-<table id="eventlist">
-  <tr>
-    <th>Name</th>
-    <th>Location</th>
-    <th>Starts At</th>
-  </tr>
-
-<% @events.each do |event| %>
-  <tr class="<%= event.cancelled? ? 'cancelled' : 'active' %>_event">
-    <td>
-      <%= 'CANCELLED:' if event.cancelled? %>
-      <%= link_to h(event.name), event_path(event) %>
-    </td>
-    <% unless event.location %>
-      <td><i>unknown</i></td>
-    <% else %>
-      <td>
-        <%= link_to h(event.location.name), location_path(event.location) %>
-      </td>
+    <% @events.each do |event| %>
+      <tr class="<%= event.cancelled? ? 'cancelled' : 'active' %>_event">
+        <td>
+          <%= 'CANCELLED:' if event.cancelled? %>
+          <%= link_to h(event.name), event_path(event) %>
+        </td>
+        <% unless event.location %>
+          <td><i>Unknown</i></td>
+        <% else %>
+          <td>
+            <%= link_to h(event.location.name), location_path(event.location) %>
+          </td>
+        <% end %>
+        <td>
+          <%= event.starts_at.to_s(:usual) %>
+          &mdash;
+          <%= event.ends_at.to_s(:brief) %>
+        </td>
+      </tr>
     <% end %>
-    <td>
-      <%= event.starts_at.to_s(:usual) %>
-      &mdash;
-      <%= event.ends_at.to_s(:brief) %>
-    </td>
-  </tr>
-<% end %>
-</table>
+  </table>
 
-<%= will_paginate @events %>
+  <%= will_paginate @events %>
+
+  <% if logged_in_and_nonspammer? %>
+    <p>
+      <%= link_to 'Add event...', :action => 'new' %>
+    </p>
+  <% end %>
 <% end %>
