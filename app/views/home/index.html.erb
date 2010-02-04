@@ -20,15 +20,14 @@
   </li>
 </ul>
 
-<h2>Future events</h2>
+<h2>Events</h2>
 <p>
-  <%= link_to "Subscribe", events_url(:format => "ics", :protocol => "webcal") %>
-  or
-  <%= link_to "download", events_url(:format => "ics") %>
-  events.
+  Subscribe to an <%= link_to 'iCalendar feed', events_url(:format => "ics", :protocol => "webcal") %> of our future events:
 </p>
 <ul>
   <%= render :partial => 'event', :collection => @events %>
-  <li><p><%= link_to "See past events...", events_path %></p></li>
+  <li>
+    <i><%= link_to 'View our past events...', events_path %></i>
+  </li>
 </ul>
 <% end %>
