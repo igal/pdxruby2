@@ -1,29 +1,29 @@
 <% cache "members,logged_#{logged_in?}" do %>
-<h3>Members</h3>
+  <h3>Members</h3>
 
-<% if logged_in_and_nonspammer? %>
-  <p>Email addresses below are only visible to other members.</p>
-<% end %>
+  <% if logged_in_and_nonspammer? %>
+    <p>Email addresses below are only visible to other members.</p>
+  <% end %>
 
-<table id="memberlist">
-  <tr>
-   <th></th>
-   <th>Name</th>
-   <th>Website</th>
-   <% if logged_in_and_nonspammer? %>
-    <th>Email</th>
-   <% end %>
-  </tr>
+  <table id="memberlist">
+    <tr>
+      <th></th>
+      <th>Name</th>
+      <th>Website</th>
+      <% if logged_in_and_nonspammer? %>
+        <th>Email</th>
+      <% end %>
+    </tr>
 
-<% for member in @members %>
-  <tr class="<%= cycle :odd, :even %>">
-    <td><%= link_to(image_tag(member.picture.url(:tiny), :border => 0), member_path(member)) if member.picture.file? %></td>
-    <td><%= link_to(h(member.name), member_path(member)) %></td>
-    <td><%= display_link_to(member.website, :title => "Website", :nofollow => true) if member.website.present? %></td>
-    <% if logged_in_and_nonspammer? %>
-      <td><%= display_mail_to(member.email, :title => "Email", :nofollow => true) if member.email.present? %></td>
+    <% for member in @members %>
+      <tr class="<%= cycle :odd, :even %>">
+        <td><%= link_to(image_tag(member.picture.url(:tiny), :border => 0), member_path(member)) if member.picture.file? %></td>
+        <td><%= link_to(h(member.name), member_path(member)) %></td>
+        <td><%= display_link_to(member.website, :title => "Website", :nofollow => true) if member.website.present? %></td>
+        <% if logged_in_and_nonspammer? %>
+          <td><%= display_mail_to(member.email, :title => "Email", :nofollow => true) if member.email.present? %></td>
+        <% end %>
+      </tr>
     <% end %>
-  </tr>
-<% end %>
-</table>
+  </table>
 <% end %>
