@@ -2,7 +2,7 @@ class HomeController < ApplicationController
   before_filter :reject_spammer, :only => [:spammers_forbidden]
 
   def index
-    @events = Defer { ::Event.recent }
+    @events = Defer { ::Event.future }
   end
 
   # Raise exception, mostly for confirming that exception_notification works.

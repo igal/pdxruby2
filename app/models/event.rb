@@ -23,6 +23,7 @@ class Event < ActiveRecord::Base
 
   default_scope :order => 'ends_at desc', :include => [:location, :member]
   named_scope :recent, :order => 'ends_at desc', :limit => 5, :include => [:location, :member]
+  named_scope :future, :order => 'ends_at asc', :include => [:location, :member], :conditions => ['ends_at >= ?', Date.today.to_time.utc]
 
   validates_presence_of :name
   validates_presence_of :starts_at

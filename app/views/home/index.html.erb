@@ -20,7 +20,7 @@
   </li>
 </ul>
 
-<h2>Events</h2>
+<h2>Future events</h2>
 <p>
   <%= link_to "Subscribe", events_url(:format => "ics", :protocol => "webcal") %>
   or
@@ -29,6 +29,6 @@
 </p>
 <ul>
   <%= render :partial => 'event', :collection => @events %>
-  <li><p><%= link_to "More...", events_path %></p></li>
+  <li><p><%= link_to "See past events...", events_path %></p></li>
 </ul>
 <% end %>
