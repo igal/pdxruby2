@@ -13,10 +13,7 @@
 </p>
 
 <p>
-  Time:
-  <%= @event.starts_at.to_s(:usual) %>
-  &mdash;
-  <%= @event.ends_at.to_s(:brief) %>
+  Time: <%= normalize_time(@event.starts_at, @event.ends_at) %>
 </p>
 
 <p>Location:

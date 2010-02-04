@@ -25,6 +25,10 @@ A:hover {
   font-weight: bold;
 }
 
+abbr {
+  border-bottom: none;
+}
+
 th, 
 td {
   text-align: left;

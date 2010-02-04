@@ -5,9 +5,7 @@
     <br/>
 
     <% if event.starts_at %>
-      <%= event.starts_at.to_s(:usual) %>
-      &ndash;
-      <%= event.ends_at.to_s(:brief) %>
+      <%= normalize_time(event.starts_at, event.ends_at) %>
     <% end %>
 
     <% if event.location %>
