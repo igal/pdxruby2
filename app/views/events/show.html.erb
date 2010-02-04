@@ -31,7 +31,7 @@
 <h3>Agenda</h3>
 <p><%= textilize @event.agenda %></p>
 
-<% unless @event.minutes.empty? -%>
+<% unless @event.minutes.blank? -%>
   <h3>Minutes</h3>
   <%= textilize @event.minutes %>
 <% end -%>
