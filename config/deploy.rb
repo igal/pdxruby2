@@ -59,6 +59,12 @@ def sh(cmd)
 end
 
 namespace :deploy do
+  desc "Install the application's gems"
+  task :gems do
+    run "cd #{current_path} && #{sudo} rake RAILS_ENV=production gems:install"
+    restart
+  end
+
   desc "Restart Passenger application"
   task :restart, :roles => :app, :except => { :no_release => true } do
     run "touch #{current_path}/tmp/restart.txt"
