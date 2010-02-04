@@ -2,6 +2,7 @@ namespace :db do
   # Load Shellwords::shellescape from the system, else use a stashed copy for use with older Ruby interpreters.
   require 'shellwords'
   require 'lib/shellwords' unless defined?(Shellwords.shellescape)
+  include Shellwords
 
   # Return string with MySQL credentials for use on a command-line.
   def mysql_credentials_for(struct)
@@ -36,12 +37,12 @@ namespace :db do
       case adapter
       when 'sqlite3'
         source = struct.database
-        sh "sqlite3 #{source.shellescape} .dump > #{target.shellescape}"
+        sh "sqlite3 #{shellescape source} .dump > #{shellescape target}"
       when 'mysql'
-        sh "mysqldump --add-locks --create-options --disable-keys --extended-insert --quick --set-charset #{mysql_credentials_for struct} > #{target_tmp.shellescape}"
+        sh "mysqldump --add-locks --create-options --disable-keys --extended-insert --quick --set-charset #{mysql_credentials_for struct} > #{shellescape target_tmp}"
         mv target_tmp, target
       when 'postgresql'
-        sh "pg_dump #{postgresql_credentials_for struct} --clean --no-owner --no-privileges --file #{target_tmp.shellescape}"
+        sh "pg_dump #{postgresql_credentials_for struct} --clean --no-owner --no-privileges --file #{shellescape target_tmp}"
         mv target_tmp, target
       else
         raise ArgumentError, "Unknown database adapter: #{adapter}"
@@ -63,11 +64,11 @@ namespace :db do
       when 'sqlite3'
         target = struct.database
         mv target, "#{target}.old" if File.exist?(target)
-        sh "sqlite3 #{target.shellescape} < #{source.shellescape}"
+        sh "sqlite3 #{shellescape target} < #{shellescape source}"
       when 'mysql'
-        sh "mysql #{mysql_credentials_for struct} < #{source.shellescape}"
+        sh "mysql #{mysql_credentials_for struct} < #{shellescape source}"
       when 'postgresql'
-        sh "psql #{postgresql_credentials_for struct} < #{source.shellescape}"
+        sh "psql #{postgresql_credentials_for struct} < #{shellescape source}"
       else
         raise ArgumentError, "Unknown database adapter: #{adapter}"
       end
