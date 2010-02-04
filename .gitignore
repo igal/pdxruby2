@@ -8,8 +8,11 @@
 /tmp/cache/
 config/database~custom.yml
 config/settings.yml
+config/db_remote.yml
 coverage/
+coverage.info
 db/*.sqlite3
+db/remote.sql
 db/schema.rb
 public/images/members/
 public/system/

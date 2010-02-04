@@ -63,4 +63,34 @@ namespace :db do
       Rake::Task["clear"].invoke
     end
   end
+
+  namespace :remote do
+    desc 'Use remote database -- download and restore it locally'
+    task :use => [:download, :restore_locally]
+
+    desc 'Generate and download database backup from remote server'
+    task :download do
+      require 'erb'
+      require 'yaml'
+      require 'ostruct'
+      backup_file = ENV['FILE'] || File.join(RAILS_ROOT, 'db', 'remote.sql')
+      config_file = File.join(RAILS_ROOT, 'config', 'db_remote.yml')
+      sample_file = File.join(RAILS_ROOT, 'config', 'db_remote~sample.yml')
+      unless File.exist?(config_file)
+        puts %{ERROR: Can't find configuration at '#{config_file}', see #{sample_file} for sample.}
+        exit 1
+      end
+      c = OpenStruct.new(YAML.load(ERB.new(File.read(config_file)).result))
+      mkdir_p File.dirname(backup_file)
+      sh 'ssh', "#{c.username}@#{c.hostname}", c.backup_command
+      sh 'rsync', '-uvax', '--progress', "#{c.username}@#{c.hostname}:#{c.backup_file}", backup_file
+    end
+
+    desc 'Restore a copy of the remote database locally'
+    task :restore_locally do
+      backup_file = File.join(RAILS_ROOT, 'db', 'remote.sql')
+      ENV['FILE'] = backup_file
+      Rake::Task['db:raw:restore'].invoke
+    end
+  end
 end
