@@ -119,7 +119,7 @@ ERROR!  You must have a file on your server with the database configuration.
     target = "#{release_path}/public/images/members"
 
     run %{if test ! -f #{source}; then mkdir -p #{source}; fi}
-    run %{mv #{target} #{target}.bak}
+    run %{if test -d #{target}; then mv #{target} #{target}.bak; fi}
     run %{ln -nsf #{source} #{target}}
   end
 
