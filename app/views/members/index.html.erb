@@ -2,7 +2,9 @@
   <h3>Members</h3>
 
   <% if logged_in_and_nonspammer? %>
-    <p>Email addresses below are only visible to other members.</p>
+    <p>Many people participate in the Portland Ruby Brigade. Email addresses below are only visible to other members.</p>
+  <% elsif not logged_in? %>
+    <p>Many people participate in the Portland Ruby Brigade. Please <%= link_to 'register', new_member_path %> if you'd like to be listed.</p>
   <% end %>
 
   <table id="memberlist">
