@@ -42,11 +42,13 @@
     <%= f.check_box :cancelled %>
   </p>
 
-  <p>
-    <%= f.label :minutes %>
-    <br/>
-    <%= f.text_area :minutes %>
-  </p>
+  <% unless @event.new_record? %>
+    <p>
+      <%= f.label :minutes %>
+      <br/>
+      <%= f.text_area :minutes %>
+    </p>
+  <% end %>
 
   <%= f.submit(@event.new_record? ? "Create" : "Update") %>
 <% end %>
