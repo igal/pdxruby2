@@ -1,66 +1,78 @@
 namespace :db do
+  # Load Shellwords::shellescape from the system, else use a stashed copy for use with older Ruby interpreters.
+  require 'shellwords'
+  require 'lib/shellwords' unless defined?(Shellwords.shellescape)
+
+  # Return string with MySQL credentials for use on a command-line.
   def mysql_credentials_for(struct)
-    string = "--user='#{struct.username}' --password='#{struct.password}' '#{struct.database}'"
-    string << " --host='#{struct.host}'" if struct.host
+    string = ""
+    string << "--user #{struct.username.shellescape}" if struct.username
+    string << "--password #{struct.password.shellescape}" if struct.password
+    string << "--host #{struct.host.shellescape}" if struct.host
+    string << "#{struct.database.shellescape}"
     return string
   end
 
+  # Return string with PostgreSQL credentials for use on a command-line.
   def postgresql_credentials_for(struct)
-    string = "#{struct.database}"
-    string << " -U '#{struct.username}'" if struct.username
-    string << " -h '#{struct.host}'" if struct.host
-    string << " -p '#{struct.port}'" if struct.port
+    string = "#{struct.database.shellescape}"
+    string << "-U #{struct.username.shellescape}" if struct.username
+    string << "-h #{struct.host.shellescape}" if struct.host
+    string << "-p #{struct.port.shellescape}" if struct.port
     return string
   end
 
   namespace :raw do
-    desc "Dump database to FILE or name of RAILS_ENV"
+    desc 'Dump database to FILE or name of RAILS_ENV'
     task :dump do
       verbose(true) unless Rake.application.options.silent
 
-      require "lib/database_yml_reader"
+      require 'lib/database_yml_reader'
       struct = DatabaseYmlReader.read
       target = ENV['FILE'] || "#{File.basename(Dir.pwd)}.sql"
+      target_tmp = "#{target}.tmp"
       adapter = struct.adapter
 
       case adapter
-      when "sqlite3"
+      when 'sqlite3'
         source = struct.database
-        sh "sqlite3 #{source} '.dump' > #{target}"
-      when "mysql"
-        sh "mysqldump --add-locks --create-options --disable-keys --extended-insert --quick --set-charset #{mysql_credentials_for(struct)} > #{target}.tmp && mv #{target}.tmp #{target}"
-      when "postgresql"
-        sh "pg_dump #{postgresql_credentials_for(struct)} --clean --no-owner --no-privileges --file #{target}.tmp && mv #{target}.tmp #{target}"
+        sh "sqlite3 #{source.shellescape} .dump > #{target.shellescape}"
+      when 'mysql'
+        sh "mysqldump --add-locks --create-options --disable-keys --extended-insert --quick --set-charset #{mysql_credentials_for struct} > #{target_tmp.shellescape}"
+        mv target_tmp, target
+      when 'postgresql'
+        sh "pg_dump #{postgresql_credentials_for struct} --clean --no-owner --no-privileges --file #{target_tmp.shellescape}"
+        mv target_tmp, target
       else
         raise ArgumentError, "Unknown database adapter: #{adapter}"
       end
     end
 
-    desc "Restore database from FILE"
+    desc 'Restore database from FILE'
     task :restore do
       verbose(true) unless Rake.application.options.silent
 
       source = ENV['FILE']
-      raise ArgumentError, "No FILE argument specified to restore from." unless source
+      raise ArgumentError, 'No FILE argument specified to restore from' unless source
 
-      require "lib/database_yml_reader"
+      require 'lib/database_yml_reader'
       struct = DatabaseYmlReader.read
       adapter = struct.adapter
 
       case adapter
-      when "sqlite3"
+      when 'sqlite3'
         target = struct.database
         mv target, "#{target}.old" if File.exist?(target)
-        sh "sqlite3 #{target} < #{source}"
-      when "mysql"
-        sh "mysql #{mysql_credentials_for(struct)} < #{source}"
-      when "postgresql"
-        sh "psql #{postgresql_credentials_for(struct)} < #{source}"
+        sh "sqlite3 #{target.shellescape} < #{source.shellescape}"
+      when 'mysql'
+        sh "mysql #{mysql_credentials_for struct} < #{source.shellescape}"
+      when 'postgresql'
+        sh "psql #{postgresql_credentials_for struct} < #{source.shellescape}"
       else
         raise ArgumentError, "Unknown database adapter: #{adapter}"
       end
 
-      Rake::Task["clear"].invoke
+      Rake::Task['clear'].invoke
     end
   end
 
@@ -82,8 +94,9 @@ namespace :db do
       end
       c = OpenStruct.new(YAML.load(ERB.new(File.read(config_file)).result))
       mkdir_p File.dirname(backup_file)
-      sh 'ssh', "#{c.username}@#{c.hostname}", c.backup_command
-      sh 'rsync', '-uvax', '--progress', "#{c.username}@#{c.hostname}:#{c.backup_file}", backup_file
+      user_at_host = "#{c.username}@#{c.hostname}"
+      sh 'ssh', user_at_host, c.backup_command
+      sh 'rsync', '-uvax', '--progress', "#{user_at_host}:#{c.backup_file}", backup_file
     end
 
     desc 'Restore a copy of the remote database locally'
