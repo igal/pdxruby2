@@ -1,6 +1,12 @@
 <% cache "events-index,page_#{params[:page] || 0}" do %>
 <h1>Listing events</h1>
 
+<% if logged_in_and_nonspammer? %>
+  <p>
+    <%= link_to 'New event', :action => 'new' %>
+  </p>
+<% end %>
+
 <table id="eventlist">
   <tr>
     <th>Name</th>
@@ -31,8 +37,4 @@
 </table>
 
 <%= will_paginate @events %>
-
-<p>
-  <%= link_to 'New event', :action => 'new' %>
-</p>
 <% end %>
