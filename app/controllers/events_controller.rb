@@ -29,8 +29,10 @@ class EventsController < ApplicationController
   # GET /events/new
   # GET /events/new.xml
   def new
-    @event = Event.new
-    @location = Location.new
+    @event = params[:clone] ? Event.clone_from(params[:clone]) : Event.new
+    @location = @event.location ? @event.location : Location.new
+
+    flash[:notice] = 'This event is cloned from a past event, be sure to update its fields!' if params[:clone]
 
     respond_to do |format|
       format.html # new.html.erb

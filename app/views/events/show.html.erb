@@ -42,6 +42,7 @@
   <% if @event.can_alter?(current_user) %>
     <%= link_to 'Edit', edit_event_path(@event) %> |
     <%= link_to 'Destroy', event_path(@event), :method => :delete, :confirm => 'Destroy this event?' %> |
+    <%= link_to 'Clone', new_event_path(:clone => @event) %> |
   <% end %>
   <%= link_to 'Browse events', events_path %>
 </p>

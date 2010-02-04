@@ -73,4 +73,35 @@ class Event < ActiveRecord::Base
   def ended?
     return(self.ends_at < Time.now)
   end
+  
+  # Array of attributes that should be cloned by #to_clone.
+  CLONE_ATTRIBUTES = [:location_id, :member_id, :name, :status, :agenda]
+
+  # Return a new record with fields selectively copied from the original, and
+  # the start_time and end_time adjusted so that their date is set to today and
+  # their time-of-day is set to the original record's time-of-day.
+  def self.clone_from(event)
+    # Lookup record if needed
+    source = self.find(event) unless event.kind_of?(Event)
+    
+    # Instantiate a new record
+    target = self.new
+    for attribute in CLONE_ATTRIBUTES
+      target.send("#{attribute}=", source.send(attribute))
+    end
+    if source.starts_at
+      target.starts_at = source.class._clone_time_for_today(source.starts_at)
+    end
+    if source.ends_at
+      target.ends_at = source.class._clone_time_for_today(source.ends_at)
+    end
+    return target
+  end
+  
+  # Return a time that's today but has the time-of-day component from the
+  # +source+ time argument.
+  def self._clone_time_for_today(source)
+    today = Date.today.to_time
+    return Time.local(today.year, today.mon, today.day, source.hour, source.min, source.sec, source.usec)
+  end
 end
