@@ -4,7 +4,7 @@ cache 'members-index-atom' do
     feed.updated(@members.blank? ? Time.at(0) : @members.first.updated_at)
 
     @members.each_with_index do |member, i|
-      feed.entry(member, :url => member_path(member)) do |entry|
+      feed.entry(member, :url => member_url(member)) do |entry|
         entry.title(member.name)
         entry.updated(member.created_at.utc.xmlschema)
 
