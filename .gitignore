@@ -8,7 +8,6 @@
 /tmp/
 config/database~custom.yml
 config/settings.yml
-config/db_remote.yml
 coverage/
 coverage.info
 db/*.sqlite3

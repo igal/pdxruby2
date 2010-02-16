@@ -51,12 +51,15 @@ set :stages, Dir["config/deploy/*.rb"].map{|t| File.basename(t, ".rb")}
 require 'capistrano/ext/multistage'
 set :default_stage, "pragmaticraft"
 
-#---[ Tasks ]-----------------------------------------------------------
+#---[ Functions ]-------------------------------------------------------
 
+# Print the command and then execute it, just like Rake
 def sh(cmd)
   puts cmd
   system cmd
 end
+
+#---[ Tasks ]-----------------------------------------------------------
 
 namespace :deploy do
   desc "Install the application's gems"
@@ -154,28 +157,27 @@ end
 namespace :db do
   namespace :remote do
     desc "Dump database on remote server"
-    task :dump do
+    task :dump, :roles => :db, :only => {:master => true} do
       run "(cd #{current_path} && rake RAILS_ENV=production db:raw:dump FILE=#{shared_path}/db/database.sql)"
     end
   end
 
   namespace :local do
     desc "Restore downloaded database on local server"
-    task :restore do
-      sh "rake db:raw:dump FILE=database~old.sql"
-      sh "rake db:raw:restore FILE=database.sql"
+    task :restore, :roles => :db, :only => {:master => true} do
+      sh "rake db:raw:dump FILE=database~old.sql && rake db:raw:restore FILE=database.sql"
     end
   end
 
   desc "Download database from remote server"
-  task :get do
+  task :download, :roles => :db, :only => {:master => true} do
     sh "rsync -uvax #{user}@#{host}:#{shared_path}/db/database.sql ."
   end
 
-  desc "Fetch: dump, download and load remote database into local instance"
-  task :fetch do
+  desc "Use: dump and download remote database and restore it locally"
+  task :use do
     db.remote.dump
-    db.get
+    db.download
     db.local.restore
   end
 end

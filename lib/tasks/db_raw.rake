@@ -1,36 +1,11 @@
 namespace :db do
-  # Load Shellwords::shellescape from the system, else use a stashed copy for use with older Ruby interpreters.
-  require 'shellwords'
-  require 'lib/shellwords' unless defined?(Shellwords.shellescape)
-  include Shellwords
-
-  # Return string with MySQL credentials for use on a command-line.
-  def mysql_credentials_for(struct)
-    string = ""
-    string << "--user #{struct.username.shellescape}" if struct.username
-    string << "--password #{struct.password.shellescape}" if struct.password
-    string << "--host #{struct.host.shellescape}" if struct.host
-    string << "#{struct.database.shellescape}"
-    return string
-  end
-
-  # Return string with PostgreSQL credentials for use on a command-line.
-  def postgresql_credentials_for(struct)
-    string = "#{struct.database.shellescape}"
-    string << "-U #{struct.username.shellescape}" if struct.username
-    string << "-h #{struct.host.shellescape}" if struct.host
-    string << "-p #{struct.port.shellescape}" if struct.port
-    return string
-  end
-
   namespace :raw do
     desc 'Dump database to FILE or name of RAILS_ENV'
     task :dump do
       verbose(true) unless Rake.application.options.silent
 
-      require 'lib/database_yml_reader'
-      struct = DatabaseYmlReader.read
-      target = ENV['FILE'] || "#{File.basename(Dir.pwd)}.sql"
+      struct = database_settings
+      target = ENV['FILE'] || "#{Rails.env}.sql"
       target_tmp = "#{target}.tmp"
       adapter = struct.adapter
 
@@ -56,8 +31,7 @@ namespace :db do
       source = ENV['FILE']
       raise ArgumentError, 'No FILE argument specified to restore from' unless source
 
-      require 'lib/database_yml_reader'
-      struct = DatabaseYmlReader.read
+      struct = database_settings
       adapter = struct.adapter
 
       case adapter
@@ -77,34 +51,55 @@ namespace :db do
     end
   end
 
-  namespace :remote do
-    desc 'Use remote database -- download and restore it locally'
-    task :use => [:download, :restore_locally]
+  # Return string escaped for use in shell.
+  # Copied from MRI 1.8.7, earlier Ruby versions don't have this.
+  def shellescape(str)
+    # An empty argument will be skipped, so return empty quotes.
+    return "''" if str.empty?
 
-    desc 'Generate and download database backup from remote server'
-    task :download do
-      require 'erb'
-      require 'yaml'
-      require 'ostruct'
-      backup_file = ENV['FILE'] || File.join(RAILS_ROOT, 'db', 'remote.sql')
-      config_file = File.join(RAILS_ROOT, 'config', 'db_remote.yml')
-      sample_file = File.join(RAILS_ROOT, 'config', 'db_remote~sample.yml')
-      unless File.exist?(config_file)
-        puts %{ERROR: Can't find configuration at '#{config_file}', see #{sample_file} for sample.}
-        exit 1
-      end
-      c = OpenStruct.new(YAML.load(ERB.new(File.read(config_file)).result))
-      mkdir_p File.dirname(backup_file)
-      user_at_host = "#{c.username}@#{c.hostname}"
-      sh 'ssh', user_at_host, c.backup_command
-      sh 'rsync', '-uvax', '--progress', "#{user_at_host}:#{c.backup_file}", backup_file
-    end
+    str = str.dup
 
-    desc 'Restore a copy of the remote database locally'
-    task :restore_locally do
-      backup_file = File.join(RAILS_ROOT, 'db', 'remote.sql')
-      ENV['FILE'] = backup_file
-      Rake::Task['db:raw:restore'].invoke
-    end
+    # Process as a single byte sequence because not all shell
+    # implementations are multibyte aware.
+    str.gsub!(/([^A-Za-z0-9_\-.,:\/@\n])/n, "\\\\\\1")
+
+    # A LF cannot be escaped with a backslash because a backslash + LF
+    # combo is regarded as line continuation and simply ignored.
+    str.gsub!(/\n/, "'\n'")
+
+    return str
+  end
+
+  # Return OpenStruct representing current environment's database.yml file.
+  def database_settings
+    require 'erb'
+    require 'yaml'
+    require 'ostruct'
+
+    return @database_settings_cache ||= OpenStruct.new(
+      YAML.load(
+        ERB.new(
+          File.read(
+            File.join(Rails.root, 'config', 'database.yml'))).result)[Rails.env])
+  end
+
+  # Return string with MySQL credentials for use on a command-line.
+  def mysql_credentials_for(struct)
+    result = []
+    result << "--user #{shellescape struct.username}" if struct.username
+    result << "--password #{shellescape struct.password}" if struct.password
+    result << "--host #{shellescape struct.host}" if struct.host
+    result << "#{shellescape struct.database}"
+    return result.join(' ')
+  end
+
+  # Return string with PostgreSQL credentials for use on a command-line.
+  def postgresql_credentials_for(struct)
+    result = []
+    result << "-U #{shellescape struct.username}" if struct.username
+    result << "-h #{shellescape struct.host}" if struct.host
+    result << "-p #{shellescape struct.port}" if struct.port
+    result << "#{shellescape struct.database}"
+    return result.join(' ')
   end
 end
