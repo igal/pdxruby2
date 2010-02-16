@@ -5,7 +5,7 @@
 /*.diff
 /*.sql
 /*.tmp
-/tmp/cache/
+/tmp/
 config/database~custom.yml
 config/settings.yml
 config/db_remote.yml
