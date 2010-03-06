@@ -1,4 +1,5 @@
-<% cache "home-index" do %>
+<%# NOTE: Cache for only one day so that "future events" don't get stale: %>
+<% cache "home-index-#{Date.today.strftime('%Y-%m-%d')}" do %>
 <h2>Who are we?</h2>
 
 <p>The Portland Ruby Brigade is a user group for Ruby programmers in the Portland, Oregon area.
