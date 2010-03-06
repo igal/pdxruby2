@@ -9,7 +9,7 @@
     </p>
   <% end %>
 
-  <% if logged_in? && (current_user.admin? || current_user == @member) %>
+  <% if logged_in? && (current_user.admin? || current_user.spammer?) %>
     <p>
       <%= f.label :spammer %>
       <br/>
