@@ -33,10 +33,18 @@ class Member < ActiveRecord::Base
   named_scope :latest, :order => 'created_at desc', :limit => 20
 
   # Validations:
-  validates_uniqueness_of :email
-  validates_length_of :name, :minimum => 3
-  validates_length_of :password, :minimum => 6
   validate :url_validator
+  validates_uniqueness_of :email
+  validates_length_of :name, :in => 3..128
+  validates_length_of :email, :in => 5..512
+  validates_length_of :password, :in => 6...256
+  validates_length_of :feed_url, :maximum => 512, :if => :feed_url
+  validates_length_of :irc_nick, :maximum => 128, :if => :irc_nick
+  validates_length_of :persistence_token, :maximum => 1024, :if => :persistence_token
+  validates_length_of :about, :maximum => 16384, :if => :about
+  validates_length_of :picture_file_name, :maximum => 255, :if => :picture_file_name
+  validates_length_of :picture_content_type, :maximum => 255, :if => :picture_content_type
+  validates_length_of :website, :maximum => 1024, :if => :website
 
   # Mixins
   include NormalizeUrlMixin

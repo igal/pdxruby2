@@ -12,13 +12,20 @@
 #
 
 class Location < ActiveRecord::Base
+  # Associations
   has_many :events
 
+  # Scopes
   default_scope :order => 'lower(name) asc'
 
+  # Validations
   validates_presence_of :name
   validates_presence_of :address
+  validates_length_of :name, :maximum => 128
+  validates_length_of :homepage, :maximum => 256, :if => :homepage
+  validates_length_of :address, :maximum => 1024
 
+  # Plugins
   has_paper_trail
 
   def can_alter?(user)

@@ -18,17 +18,25 @@
 #
 
 class Event < ActiveRecord::Base
+  # Associations
   belongs_to :member
   belongs_to :location
 
+  # Scopes
   default_scope :order => 'ends_at desc', :include => [:location, :member]
   named_scope :recent, :order => 'ends_at desc', :limit => 5, :include => [:location, :member]
   named_scope :future, :order => 'ends_at asc', :include => [:location, :member], :conditions => ['ends_at >= ?', Date.today.to_time.utc]
 
+  # Validations
   validates_presence_of :name
   validates_presence_of :starts_at
   validates_presence_of :ends_at
+  validates_length_of :name, :maximum => 128
+  validates_length_of :status, :maximum => 64, :if => :status
+  validates_length_of :agenda, :maximum => 16384, :if => :agenda
+  validates_length_of :minutes, :maximum => 16384, :if => :minutes
 
+  # Plugins
   has_paper_trail
 
   def can_alter?(user)
