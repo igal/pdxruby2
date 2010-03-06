@@ -36,6 +36,8 @@ Rails::Initializer.run do |config|
   config.gem 'right_aws', :lib => false # we aren't actually using AWS, but paperclip can, so it requires it.
   config.gem 'thoughtbot-paperclip', :source => 'http://gems.github.com', :lib => 'paperclip'
 
+  require 'fileutils'
+
   # Only load the plugins named here, in the order given (default is alphabetical).
   # :all can be used as a placeholder for all plugins not explicitly named
   # config.plugins = [ :exception_notification, :ssl_requirement, :all ]
