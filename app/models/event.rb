@@ -65,7 +65,7 @@ class Event < ActiveRecord::Base
         e.lastmod     item.updated_at if item.updated_at
         e.description item.agenda
         if item.location
-          e.set_text  'LOCATION', "#{item.location.name}, #{item.location.address}"
+          e.set_text  'LOCATION', [item.location.name, item.location.address].join(', ')
         end
         if url_helper
           url = url_helper.call(item)
