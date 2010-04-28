@@ -90,13 +90,14 @@ class Event < ActiveRecord::Base
   # their time-of-day is set to the original record's time-of-day.
   def self.clone_from(event)
     # Lookup record if needed
-    source = self.find(event) unless event.kind_of?(Event)
+    source = event.kind_of?(Event) ? event : self.find(event)
     
     # Instantiate a new record
     target = self.new
     for attribute in CLONE_ATTRIBUTES
       target.send("#{attribute}=", source.send(attribute))
     end
+
     if source.starts_at
       target.starts_at = source.class._clone_time_for_today(source.starts_at)
     end
