@@ -39,10 +39,10 @@ Rails::Initializer.run do |config|
   config.gem 'thoughtbot-paperclip', :source => 'http://gems.github.com', :lib => 'paperclip'
 
   # For special environments
-  if RAILS_ENV == 'test'
-    config.gem 'rspec', :lib => false
+  if %w[test development].include? RAILS_ENV
+    config.gem 'rspec',       :lib => false
     config.gem 'rspec-rails', :lib => false
-    config.gem 'rcov', :lib => false
+    config.gem 'rcov',        :lib => false
   end
 
   # Only load the plugins named here, in the order given (default is alphabetical).
