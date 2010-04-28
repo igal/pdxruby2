@@ -13,6 +13,7 @@ coverage.info
 db/*.sqlite3
 db/remote.sql
 db/schema.rb
+nbproject/
 public/images/members/
 public/system/
 tags
