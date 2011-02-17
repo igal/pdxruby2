@@ -64,7 +64,7 @@ class Member < ActiveRecord::Base
   end
 
   def self.hashed_password(string)
-    return Digest::SHA1.hexdigest(string)
+    return string.present? ? Digest::SHA1.hexdigest(string) : nil
   end
 
   def password=(string)
