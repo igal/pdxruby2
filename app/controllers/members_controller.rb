@@ -45,7 +45,7 @@ class MembersController < ApplicationController
   # POST /members.xml
   def create
     unless params[:dont_fill_this_in].blank?
-      flash[:notice] = "You filled in a field that you shouldn't have, therefore I think you're a robot."
+      flash[:error] = "You filled in a field that you shouldn't have, therefore I think you're a robot."
       flash.keep
       return redirect_to(new_member_path) 
     end
@@ -59,7 +59,7 @@ class MembersController < ApplicationController
     if params[:member_password] == params[:member_verify_password]
       @member.password = params[:member_password]
     else
-      flash[:notice] = "ERROR: Passwords were not the same."
+      flash[:error] = "Passwords were not the same."
       render :action => "new"
       return false
     end
@@ -87,7 +87,7 @@ class MembersController < ApplicationController
       if params[:member_password] == params[:member_verify_password]
         @member.password = params[:member_password]
       else
-        flash[:notice] = "ERROR: Passwords were not the same."
+        flash[:error] = "Passwords were not the same."
         render :action => "edit"
         return
       end
@@ -124,7 +124,7 @@ protected
       @member = Member.find(params[:id])
       return false
     rescue ActiveRecord::RecordNotFound => e
-      flash[:notice] = "Member not found, maybe they were deleted."
+      flash[:error] = "Member not found, maybe they were deleted."
       return redirect_back_or_default(members_path)
     end
   end
@@ -133,7 +133,7 @@ protected
     if @member.can_alter?(current_user)
       return false
     else
-      flash[:notice] = "You are not allowed to edit this user's account"
+      flash[:error] = "You are not allowed to edit this user's account"
       return redirect_back_or_default(member_path(@member))
     end
   end

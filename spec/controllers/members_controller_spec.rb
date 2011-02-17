@@ -122,7 +122,7 @@ describe MembersController do
       end
 
       it "should set notice for human about this situation" do
-        flash[:notice].should_not be_nil
+        flash[:error].should_not be_nil
       end
     end
 
