@@ -1,7 +1,7 @@
 # Be sure to restart your server when you modify this file
 
 # Specifies gem version of Rails to use when vendor/rails is not present
-RAILS_GEM_VERSION = '~> 2.3.4' unless defined? RAILS_GEM_VERSION
+RAILS_GEM_VERSION = '2.3.10' unless defined? RAILS_GEM_VERSION
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
@@ -13,7 +13,7 @@ Rails::Initializer.run do |config|
 
   # Add additional load paths for your own custom dirs
   # config.load_paths += %W( #{RAILS_ROOT}/extras )
-  config.load_paths += [
+  config.autoload_paths += [
     "#{RAILS_ROOT}", 
     "#{RAILS_ROOT}/app/observers",
     "#{RAILS_ROOT}/app/mixins",
@@ -28,21 +28,23 @@ Rails::Initializer.run do |config|
   require 'fileutils'
 
   # For all environments
-  config.gem 'RedCloth'
-  config.gem 'facets', :lib => false # Selectively loaded by config/initializers/dependencies.rb
-  config.gem 'vpim', :lib => 'vpim/icalendar'
-  config.gem 'justinfrench-formtastic', :lib => 'formtastic', :source => 'http://gems.github.com'
-  config.gem 'mislav-will_paginate', :lib => 'will_paginate', :source => 'http://gems.github.com'
-  config.gem 'authlogic'
-  config.gem 'authlogic-oid', :lib => false
-  config.gem 'right_aws', :lib => false # we aren't actually using AWS, but paperclip can, so it requires it.
-  config.gem 'thoughtbot-paperclip', :source => 'http://gems.github.com', :lib => 'paperclip'
+  config.gem 'RedCloth', :version => '4.2.3'
+  config.gem 'facets', :version => '2.5.2', :lib => false # Selectively loaded by config/initializers/dependencies.rb
+  config.gem 'vpim', :version => '0.695', :lib => 'vpim/icalendar'
+  config.gem 'formtastic', :version => '1.0.1', :lib => 'formtastic'
+  config.gem 'will_paginate', :version => '2.3.15', :lib => 'will_paginate'
+  config.gem 'authlogic', :version => '2.1.6'
+  config.gem 'authlogic-oid', :version => '1.0.4', :lib => false
+  config.gem 'right_aws', :version => '1.10.0', :lib => false # we aren't actually using AWS, but paperclip can, so it requires it.
+  config.gem 'paperclip', :version => '2.3.8', :lib => 'paperclip'
+  config.gem 'paper_trail', :version => '1.6.4'
+  config.gem 'redirect_routing', :version => '0.0.4'
 
   # For special environments
   if %w[test development].include? RAILS_ENV
-    config.gem 'rspec',       :lib => false
-    config.gem 'rspec-rails', :lib => false
-    config.gem 'rcov',        :lib => false
+    config.gem 'rspec', :version => '1.3.1', :lib => false
+    config.gem 'rspec-rails', :version => '1.3.3', :lib => false
+    config.gem 'rcov', :version => '0.9.9', :lib => false
   end
 
   # Only load the plugins named here, in the order given (default is alphabetical).
