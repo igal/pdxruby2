@@ -19,43 +19,54 @@
 
   <p>
     <%= f.label :name %>
+    <%= required_field %>
     <br/>
     <%= f.text_field :name %>
   </p>
 
   <p>
     <%= f.label :password %>
+    <% if @member.new_record? %>
+      <%= required_field %>
+    <% else %>
+      (only enter value to change)
+    <% end %>
     <br/>
     <%= password_field_tag :member_password, '' %>
   </p>
 
   <p>
     <%= f.label :verify_password %>
+    <% if @member.new_record? %>
+      <%= required_field %>
+    <% else %>
+      (only enter value to change)
+    <% end %>
     <br/>
     <%= password_field_tag :member_verify_password, '' %>
   </p>
 
   <p>
-    <%= f.label :email %>
-    (only shown to other members)
+    <%= f.label :email, 'Email, will only be shown to other members' %>
+    <%= required_field %>
     <br/>
     <%= f.text_field :email %>
   </p>
 
   <p>
-    <%= f.label :website %>
+    <%= f.label :website, 'Website URL' %>
     <br/>
     <%= f.text_field :website %>
   </p>
 
   <p>
-    <%= f.label :feed_url %> (an RSS or Atom feed)
+    <%= f.label :feed_url, 'Feed URL, an RSS or ATOM feed' %>
     <br/>
     <%= f.text_field :feed_url %>
   </p>
 
   <p>
-    <%= f.label :irc_nick %>
+    <%= f.label :irc_nick, 'IRC nickname on #pdx.rb' %>
     <br/>
     <%= f.text_field :irc_nick %>
   </p>
@@ -68,7 +79,8 @@
   </p>
 
   <p>
-    <%= f.label :about, "Describe yourself" %>
+    <%= f.label :about, 'Describe yourself' %>
+    <br/>
     <%= display_textile_help_link '(instructions for fancy formatting)' %>
     <br/>
     <%= f.text_area :about %>
@@ -77,11 +89,5 @@
   <%= text_field_tag :dont_fill_this_in, '', :class => 'dont_fill_this_in' %>
 
   <%= f.submit(@member.new_record? ? 'Create' : 'Update') %>
+  | <%= link_to 'Cancel', members_path %>
 <% end %>
-
-<p>
-  <% unless @member.new_record? %>
-  <%= link_to 'Show', @member %> |
-  <% end %>
-  <%= link_to 'Cancel', members_path %>
-</p>

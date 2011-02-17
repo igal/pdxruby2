@@ -47,6 +47,10 @@ td {
   background: #FAF6F6;
 }
 
+.required_field {
+  color: #808080;
+}
+
 /*
  * banner
  */
