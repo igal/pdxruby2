@@ -19,6 +19,11 @@ class MembersController < ApplicationController
   # GET /members/1
   # GET /members/1.xml
   def show
+    if @member.spammer? and (not logged_in? or (! current_user.admin and current_user != @member))
+      flash[:error] = "The user you tried to view is a suspected spammer and will not be shown. Please login as that user and edit your 'Profile' if this is a mistake."
+      flash.keep
+      return redirect_to(members_path) 
+    end
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @member }

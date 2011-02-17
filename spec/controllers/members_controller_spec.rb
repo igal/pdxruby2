@@ -13,6 +13,7 @@ describe MembersController do
       :name => "A name",
       :email => "email@host.com",
       :can_alter? => true,
+      :spammer? => false,
     }
     @mock_member ||= mock_model(Member, defaults.merge(stubs))
   end
@@ -46,7 +47,39 @@ describe MembersController do
     it "assigns the requested member as @member" do
       Member.stub!(:find).with("37").and_return(mock_member)
       get :show, :id => "37"
+      response.should be_success
       assigns[:member].should equal(mock_member)
+    end
+
+    describe "for a spammer profile" do
+      it "rejects anonymous viewing" do
+        get :show, :id => members(:spammy).id
+
+        response.should redirect_to(members_path)
+        flash[:error].should =~ /spammer/
+      end
+
+      it "rejects another user's viewing" do
+        login_as :clio
+        get :show, :id => members(:spammy).id
+
+        response.should redirect_to(members_path)
+        flash[:error].should =~ /spammer/
+      end
+
+      it "allows admin's viewing" do
+        login_as :aaron
+        get :show, :id => members(:spammy).id
+
+        response.should be_success
+      end
+
+      it "allows user to view own profile" do
+        login_as :aaron
+        get :show, :id => members(:spammy).id
+
+        response.should be_success
+      end
     end
   end
 
