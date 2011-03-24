@@ -41,7 +41,7 @@ class Member < ActiveRecord::Base
   validates_length_of :feed_url, :maximum => 512, :if => :feed_url
   validates_length_of :irc_nick, :maximum => 128, :if => :irc_nick
   validates_length_of :persistence_token, :maximum => 1024, :if => :persistence_token
-  validates_length_of :about, :maximum => 16384, :if => :about
+  validates_length_of :about, :in => 3..16384
   validates_length_of :picture_file_name, :maximum => 255, :if => :picture_file_name
   validates_length_of :picture_content_type, :maximum => 255, :if => :picture_content_type
   validates_length_of :website, :maximum => 1024, :if => :website
