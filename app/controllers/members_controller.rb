@@ -70,7 +70,7 @@ class MembersController < ApplicationController
     end
 
     respond_to do |format|
-      if @member.save
+      if verify_recaptcha(:model => @member, :message => "Sorry, but you answered the captcha incorrectly.") && @member.save
         flash[:notice] = 'Member was successfully created.'
         format.html { redirect_to(member_path(@member)) }
         format.xml  { render :xml => @member, :status => :created, :location => @member }

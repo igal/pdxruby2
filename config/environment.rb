@@ -39,6 +39,7 @@ Rails::Initializer.run do |config|
   config.gem 'paperclip', :version => '2.3.8', :lib => 'paperclip'
   config.gem 'paper_trail', :version => '1.6.4'
   config.gem 'redirect_routing', :version => '0.0.4'
+  config.gem 'recaptcha', :version => '0.3.1', :lib => 'recaptcha/rails'
 
   # For special environments
   if %w[test development].include? RAILS_ENV

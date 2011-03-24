@@ -82,6 +82,14 @@
 
   <%= text_field_tag :dont_fill_this_in, '', :class => 'dont_fill_this_in' %>
 
+  <% if @member.new_record? %>
+    <p>
+      <%= label_tag :recaptcha_response_field, 'Please fill in the captcha, it helps stop spam bots from abusing this form', :class => 'required_field' %>
+      <br/>
+      <%= recaptcha_tags if @member.new_record? %>
+    </p>
+  <% end %>
+
   <%= f.submit(@member.new_record? ? 'Create' : 'Update') %>
   | <%= link_to 'Cancel', members_path %>
 <% end %>
