@@ -47,8 +47,18 @@ td {
   background: #FAF6F6;
 }
 
-.required_field {
+.required_field:before {
+  content: "*";
+  color: red;
+  position: absolute;
+  left: 1em;
+  margin: 0;
+}
+
+.required_field:after {
+  content: " (Required)";
   color: #808080;
+  font-style: italic;
 }
 
 /*
