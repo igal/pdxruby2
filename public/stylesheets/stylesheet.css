@@ -145,7 +145,8 @@ td {
   padding: 0;
 }
 
-#content p {
+#content p,
+#content div {
   padding-left: 2em;
 }
 
