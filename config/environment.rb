@@ -1,8 +1,5 @@
 # Be sure to restart your server when you modify this file
 
-# Specifies gem version of Rails to use when vendor/rails is not present
-RAILS_GEM_VERSION = '2.3.10' unless defined? RAILS_GEM_VERSION
-
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
 
@@ -19,34 +16,10 @@ Rails::Initializer.run do |config|
     "#{RAILS_ROOT}/app/mixins",
   ]
 
-  # Specify gems that this application depends on and have them installed with rake gems:install
-  # config.gem "bj"
-  # config.gem "hpricot", :version => '0.6', :source => "http://code.whytheluckystiff.net"
-  # config.gem "sqlite3-ruby", :lib => "sqlite3"
-  # config.gem "aws-s3", :lib => "aws/s3"
+  # Specify gems that this application depends on in the `Gemfile` and install using `bundle`
 
+  # Load additional libraries included with Ruby:
   require 'fileutils'
-
-  # For all environments
-  config.gem 'RedCloth', :version => '4.2.3'
-  config.gem 'facets', :version => '2.5.2', :lib => false # Selectively loaded by config/initializers/dependencies.rb
-  config.gem 'vpim', :version => '0.695', :lib => 'vpim/icalendar'
-  config.gem 'formtastic', :version => '1.0.1', :lib => 'formtastic'
-  config.gem 'will_paginate', :version => '2.3.15', :lib => 'will_paginate'
-  config.gem 'authlogic', :version => '2.1.6'
-  config.gem 'authlogic-oid', :version => '1.0.4', :lib => false
-  config.gem 'right_aws', :version => '1.10.0', :lib => false # we aren't actually using AWS, but paperclip can, so it requires it.
-  config.gem 'paperclip', :version => '2.3.8', :lib => 'paperclip'
-  config.gem 'paper_trail', :version => '1.6.4'
-  config.gem 'redirect_routing', :version => '0.0.4'
-  config.gem 'recaptcha', :version => '0.3.1', :lib => 'recaptcha/rails'
-
-  # For special environments
-  if %w[test development].include? RAILS_ENV
-    config.gem 'rspec', :version => '1.3.1', :lib => false
-    config.gem 'rspec-rails', :version => '1.3.3', :lib => false
-    config.gem 'rcov', :version => '0.9.9', :lib => false
-  end
 
   # Only load the plugins named here, in the order given (default is alphabetical).
   # :all can be used as a placeholder for all plugins not explicitly named

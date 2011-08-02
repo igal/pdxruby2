@@ -62,12 +62,6 @@ end
 #---[ Tasks ]-----------------------------------------------------------
 
 namespace :deploy do
-  desc "Install the application's gems"
-  task :gems do
-    run "cd #{current_path} && #{sudo} rake RAILS_ENV=production gems:install"
-    restart
-  end
-
   desc "Restart Passenger application"
   task :restart, :roles => :app, :except => { :no_release => true } do
     run "touch #{current_path}/tmp/restart.txt"
@@ -134,7 +128,13 @@ ERROR!  You must have a file on your server with the database configuration.
 
   desc "Clear the application's cache"
   task :clear_cache do
-    run "(cd #{current_path} && rake RAILS_ENV=production clear)"
+    run "(cd #{current_path} && RAILS_ENV=production bundle exec rake clear)"
+  end
+
+  desc "Finish update"
+  task :finish, :roles => :app do
+    # Bundler
+    run "export RAILS_ENV=production; cd #{release_path} && (bundle check || bundle --local || bundle --without test --path #{release_path}/tmp/bundler)"
   end
 end
 
@@ -158,14 +158,14 @@ namespace :db do
   namespace :remote do
     desc "Dump database on remote server"
     task :dump, :roles => :db, :only => {:master => true} do
-      run "(cd #{current_path} && rake RAILS_ENV=production db:raw:dump FILE=#{shared_path}/db/database.sql)"
+      run "(cd #{current_path} && RAILS_ENV=production bundle exec rake db:raw:dump FILE=#{shared_path}/db/database.sql)"
     end
   end
 
   namespace :local do
     desc "Restore downloaded database on local server"
     task :restore, :roles => :db, :only => {:master => true} do
-      sh "rake db:raw:dump FILE=database~old.sql && rake db:raw:restore FILE=database.sql"
+      sh "bundle exec rake db:raw:dump FILE=database~old.sql && bundle exec rake db:raw:restore FILE=database.sql"
     end
   end
 
@@ -184,15 +184,14 @@ end
 
 #---[ Triggers ]--------------------------------------------------------
 
-# After setup
 after "deploy:setup", "deploy:prepare_shared"
 
-# After finalize_update
 before "deploy:finalize_update", "deploy:link_database_yml"
 before "deploy:finalize_update", "deploy:link_settings_yml"
 before "deploy:finalize_update", "deploy:link_member_images"
 
-# After symlink
+after "deploy:finalize_update", "deploy:finish"
+
 after "deploy:symlink", "deploy:clear_cache"
 
 #===[ fin ]=============================================================
