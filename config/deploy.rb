@@ -134,7 +134,7 @@ ERROR!  You must have a file on your server with the database configuration.
   desc "Finish update"
   task :finish, :roles => :app do
     # Bundler
-    run "export RAILS_ENV=production; cd #{release_path} && (bundle check || bundle --local || bundle --without test --path #{release_path}/tmp/bundler)"
+    run "export RAILS_ENV=production; cd #{release_path} && (bundle check || bundle --local || bundle --without test --without development --path #{release_path}/tmp/bundler)"
   end
 end
 
