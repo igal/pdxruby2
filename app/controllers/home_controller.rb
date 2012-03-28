@@ -5,6 +5,10 @@ class HomeController < ApplicationController
     @events = Defer { ::Event.future }
   end
 
+  def job_guidelines
+    
+  end
+
   # Raise exception, mostly for confirming that exception_notification works.
   def omfg
     raise ArgumentError, "OMFG"

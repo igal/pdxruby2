@@ -21,6 +21,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.root :controller => "home"
 
+  map.job_guidelines '/job_guidelines', :controller => 'home', :action => :job_guidelines
+
   map.login    '/login', :controller => 'member_sessions', :action => 'login'
   map.login_as '/login_as/:id', :controller => 'member_sessions', :action => 'login_as'
   map.logout   '/logout', :controller => 'member_sessions', :action => 'logout'
